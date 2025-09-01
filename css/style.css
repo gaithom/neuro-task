@@ -19,10 +19,12 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #f9fafb;
-    color: #1f2937;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
     line-height: 1.6;
+    background-color: #121e17;
+    color: #e0e0e0;
 }
 
 .container {
@@ -34,11 +36,12 @@ body {
 
 /* Header Styles */
 .header {
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: #1a2c21;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     position: sticky;
     top: 0;
     z-index: 10;
+    border-bottom: 1px solid #2a4b35;
 }
 
 .header .container {
@@ -55,7 +58,7 @@ body {
 }
 
 .logo-icon {
-    background-color: #6366f1;
+    background-color: #2e7d32;
     border-radius: 0.5rem;
     padding: 0.5rem;
     margin-right: 0.75rem;
@@ -65,14 +68,14 @@ body {
 }
 
 .logo-icon i {
-    color: white;
+    color: #e8f5e9;
     font-size: 1.25rem;
 }
 
 .logo h1 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #6366f1;
+    color: #4caf50;
 }
 
 .desktop-nav {
@@ -85,8 +88,8 @@ body {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    background-color: #6366f1;
-    color: white;
+    background-color: #2e7d32;
+    color: #e8f5e9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,15 +99,15 @@ body {
 .mobile-menu-btn {
     background: none;
     border: none;
-    color: #6b7280;
+    color: #a5d6a7;
     font-size: 1.5rem;
     cursor: pointer;
 }
 
 .mobile-menu {
     display: none;
-    background-color: white;
-    border-top: 1px solid #e5e7eb;
+    background-color: #1a2c21;
+    border-top: 1px solid #2a4b35;
     padding: 0.75rem 1rem;
 }
 
@@ -126,7 +129,7 @@ body {
     border: none;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    color: #6b7280;
+    color: #a5d6a7;
     font-size: 0.75rem;
     cursor: pointer;
 }
@@ -137,13 +140,14 @@ body {
 }
 
 .mobile-nav button.nav-active {
-    color: #6366f1;
-    background-color: #f0f1ff;
+    color: #4caf50;
+    background-color: #2a4b35;
 }
 
 /* Main Content */
 .main-content {
     padding: 2rem 1rem;
+    background-color: #121e17;
 }
 
 .page {
@@ -161,17 +165,19 @@ body {
 
 /* Card Styles */
 .card {
-    background-color: white;
+    background-color: #1a2c21;
     border-radius: 0.75rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    border: 1px solid #2a4b35;
 }
 
 .card h2 {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1rem;
+    color: #4caf50;
 }
 
 .card-header {
@@ -187,16 +193,17 @@ body {
 }
 
 .action-buttons button {
-    background-color: #f3f4f6;
+    background-color: #2a4b35;
     border: none;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
     cursor: pointer;
+    color: #e8f5e9;
 }
 
 .action-buttons button:hover {
-    background-color: #e5e7eb;
+    background-color: #3a5b45;
 }
 
 /* Input Styles */
@@ -208,7 +215,7 @@ body {
     display: block;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
+    color: #a5d6a7;
     margin-bottom: 0.5rem;
 }
 
@@ -219,43 +226,55 @@ body {
 .input-with-button textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid #2a4b35;
     border-radius: 0.5rem;
     resize: vertical;
     min-height: 5rem;
+    background-color: #22382b;
+    color: #e0e0e0;
+}
+
+.input-with-button textarea:focus {
+    outline: none;
+    border-color: #4caf50;
 }
 
 .input-with-button button {
     position: absolute;
     bottom: 0.75rem;
     right: 0.75rem;
-    background-color: #6366f1;
-    color: white;
+    background-color: #2e7d32;
+    color: #e8f5e9;
     border: none;
     border-radius: 0.5rem;
     padding: 0.5rem;
     cursor: pointer;
 }
 
+.input-with-button button:hover {
+    background-color: #3d8b40;
+}
+
 /* Tip Box */
 .tip-box {
-    background-color: #eff6ff;
+    background-color: #2a4b35;
     padding: 1rem;
     border-radius: 0.5rem;
     display: flex;
     align-items: flex-start;
     margin-bottom: 1.5rem;
+    border-left: 4px solid #4caf50;
 }
 
 .tip-box i {
-    color: #3b82f6;
+    color: #4caf50;
     margin-right: 0.75rem;
     font-size: 1.125rem;
 }
 
 .tip-box p {
     font-size: 0.875rem;
-    color: #1e40af;
+    color: #c8e6c9;
 }
 
 /* AI Suggestions */
@@ -267,6 +286,7 @@ body {
     font-size: 1rem;
     font-weight: 500;
     margin-bottom: 0.75rem;
+    color: #a5d6a7;
 }
 
 .suggestion-grid {
@@ -276,28 +296,29 @@ body {
 }
 
 .suggestion-item {
-    background-color: #f3f4f6;
+    background-color: #22382b;
     padding: 0.75rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
     cursor: pointer;
     display: flex;
     align-items: center;
+    transition: background-color 0.2s;
 }
 
 .suggestion-item:hover {
-    background-color: #e5e7eb;
+    background-color: #2a4b35;
 }
 
 .suggestion-item i {
-    color: #6366f1;
+    color: #4caf50;
     margin-right: 0.5rem;
 }
 
 /* Button Styles */
 .btn-primary {
-    background-color: #6366f1;
-    color: white;
+    background-color: #2e7d32;
+    color: #e8f5e9;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
@@ -306,10 +327,11 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.2s;
 }
 
 .btn-primary:hover {
-    background-color: #818cf8;
+    background-color: #3d8b40;
 }
 
 .btn-primary i {
@@ -317,17 +339,18 @@ body {
 }
 
 .btn-secondary {
-    background-color: white;
-    color: #374151;
-    border: 1px solid #d1d5db;
+    background-color: #22382b;
+    color: #e8f5e9;
+    border: 1px solid #2a4b35;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .btn-secondary:hover {
-    background-color: #f9fafb;
+    background-color: #2a4b35;
 }
 
 .full-width {
@@ -336,17 +359,18 @@ body {
 
 /* AI Message */
 .ai-message {
-    background-color: #f3f4f6;
+    background-color: #22382b;
     padding: 1rem;
     border-radius: 0.5rem;
     display: flex;
     align-items: flex-start;
     margin-bottom: 1.5rem;
+    border-left: 4px solid #2e7d32;
 }
 
 .ai-avatar {
-    background-color: #6366f1;
-    color: white;
+    background-color: #2e7d32;
+    color: #e8f5e9;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
@@ -359,6 +383,7 @@ body {
 
 .ai-message p {
     font-size: 0.875rem;
+    color: #e0e0e0;
 }
 
 /* AI Actions */
@@ -369,7 +394,7 @@ body {
 }
 
 .ai-actions button {
-    background-color: #f3f4f6;
+    background-color: #22382b;
     border: none;
     padding: 0.75rem;
     border-radius: 0.5rem;
@@ -377,14 +402,16 @@ body {
     display: flex;
     align-items: center;
     cursor: pointer;
+    transition: background-color 0.2s;
+    color: #e0e0e0;
 }
 
 .ai-actions button:hover {
-    background-color: #e5e7eb;
+    background-color: #2a4b35;
 }
 
 .ai-actions button i {
-    color: #6366f1;
+    color: #4caf50;
     margin-right: 0.75rem;
     font-size: 1.125rem;
 }
@@ -399,8 +426,8 @@ body {
 }
 
 .task-item {
-    background-color: white;
-    border: 1px solid #e5e7eb;
+    background-color: #1a2c21;
+    border: 1px solid #2a4b35;
     border-radius: 0.5rem;
     padding: 1rem;
     display: flex;
@@ -410,7 +437,8 @@ body {
 
 .task-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    border-color: #4caf50;
 }
 
 .task-item input[type="checkbox"] {
@@ -419,8 +447,9 @@ body {
     width: 1.25rem;
     height: 1.25rem;
     border-radius: 0.25rem;
-    border: 1px solid #d1d5db;
-    accent-color: #6366f1;
+    border: 1px solid #2a4b35;
+    accent-color: #4caf50;
+    background-color: #22382b;
 }
 
 .task-content {
@@ -430,16 +459,17 @@ body {
 .task-title {
     font-weight: 500;
     margin-bottom: 0.25rem;
+    color: #e0e0e0;
 }
 
 .task-title.completed {
-    color: #9ca3af;
+    color: #81c784;
     text-decoration: line-through;
 }
 
 .task-description {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #a5d6a7;
     margin-bottom: 0.5rem;
 }
 
@@ -457,23 +487,23 @@ body {
 }
 
 .priority-high {
-    background-color: #fef2f2;
-    color: #dc2626;
+    background-color: #4e342e;
+    color: #ef5350;
 }
 
 .priority-medium {
-    background-color: #fffbeb;
-    color: #d97706;
+    background-color: #5d4037;
+    color: #ffb74d;
 }
 
 .priority-low {
-    background-color: #f0fdf4;
-    color: #059669;
+    background-color: #2e4e35;
+    color: #81c784;
 }
 
 .task-due {
     font-size: 0.75rem;
-    color: #6b7280;
+    color: #a5d6a7;
     display: flex;
     align-items: center;
 }
@@ -483,12 +513,12 @@ body {
 }
 
 .task-due.overdue {
-    color: #dc2626;
+    color: #ef5350;
 }
 
 .task-category {
     font-size: 0.75rem;
-    color: #6b7280;
+    color: #a5d6a7;
     text-transform: capitalize;
 }
 
@@ -500,17 +530,17 @@ body {
 .task-actions button {
     background: none;
     border: none;
-    color: #9ca3af;
+    color: #a5d6a7;
     cursor: pointer;
     font-size: 0.875rem;
 }
 
 .task-actions button:hover {
-    color: #6366f1;
+    color: #4caf50;
 }
 
 .task-actions button.delete:hover {
-    color: #dc2626;
+    color: #ef5350;
 }
 
 /* Stats Grid */
@@ -522,16 +552,17 @@ body {
 }
 
 .stat-card {
-    background-color: #f0f1ff;
+    background-color: #22382b;
     padding: 1rem;
     border-radius: 0.5rem;
     display: flex;
     align-items: center;
+    border-left: 4px solid #2e7d32;
 }
 
 .stat-icon {
-    background-color: #6366f1;
-    color: white;
+    background-color: #2e7d32;
+    color: #e8f5e9;
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
@@ -549,21 +580,22 @@ body {
 .stat-value {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #1f2937;
+    color: #e8f5e9;
 }
 
 .stat-label {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #a5d6a7;
 }
 
 /* AI Analysis */
 .ai-analysis {
-    background-color: #f3f4f6;
+    background-color: #22382b;
     padding: 1rem;
     border-radius: 0.5rem;
     display: flex;
     align-items: flex-start;
+    border-left: 4px solid #2e7d32;
 }
 
 .analysis-content {
@@ -573,6 +605,7 @@ body {
 .analysis-title {
     font-weight: 500;
     margin-bottom: 0.25rem;
+    color: #4caf50;
 }
 
 /* Filter Buttons */
@@ -589,20 +622,21 @@ body {
     border-radius: 0.5rem;
     font-size: 0.875rem;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .filter-buttons button.filter-active {
-    background-color: #6366f1;
-    color: white;
+    background-color: #2e7d32;
+    color: #e8f5e9;
 }
 
 .filter-buttons button:not(.filter-active) {
-    background-color: #f3f4f6;
-    color: #6b7280;
+    background-color: #22382b;
+    color: #a5d6a7;
 }
 
 .filter-buttons button:not(.filter-active):hover {
-    background-color: #e5e7eb;
+    background-color: #2a4b35;
 }
 
 /* Insights Grid */
@@ -614,19 +648,21 @@ body {
 }
 
 .insight-card {
-    background-color: #f0f1ff;
+    background-color: #22382b;
     padding: 1.5rem;
     border-radius: 0.5rem;
+    border-left: 4px solid #2e7d32;
 }
 
 .insight-card h3 {
     font-size: 1rem;
     font-weight: 500;
     margin-bottom: 1rem;
+    color: #4caf50;
 }
 
 .progress-bar {
-    background-color: #e5e7eb;
+    background-color: #2a4b35;
     height: 0.5rem;
     border-radius: 0.25rem;
     overflow: hidden;
@@ -634,7 +670,7 @@ body {
 }
 
 .progress-fill {
-    background-color: #6366f1;
+    background-color: #4caf50;
     height: 100%;
     border-radius: 0.25rem;
     transition: width 0.3s ease;
@@ -642,7 +678,7 @@ body {
 
 .progress-text {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #a5d6a7;
 }
 
 .chart-container {
@@ -660,7 +696,7 @@ body {
 
 .chart-bar-value {
     width: 2.5rem;
-    background-color: #10b981;
+    background-color: #4caf50;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
 }
@@ -668,19 +704,22 @@ body {
 .chart-bar-label {
     font-size: 0.75rem;
     margin-top: 0.5rem;
+    color: #a5d6a7;
 }
 
 /* Recommendations */
 .recommendations {
-    background-color: #f3f4f6;
+    background-color: #22382b;
     padding: 1.5rem;
     border-radius: 0.5rem;
+    border-left: 4px solid #2e7d32;
 }
 
 .recommendations h3 {
     font-size: 1rem;
     font-weight: 500;
     margin-bottom: 1rem;
+    color: #4caf50;
 }
 
 .recommendation-item {
@@ -700,11 +739,12 @@ body {
 .recommendation-content h4 {
     font-weight: 500;
     margin-bottom: 0.25rem;
+    color: #e8f5e9;
 }
 
 .recommendation-content p {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #a5d6a7;
 }
 
 /* Add Task Form */
@@ -722,7 +762,7 @@ body {
     display: block;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
+    color: #a5d6a7;
     margin-bottom: 0.5rem;
 }
 
@@ -731,9 +771,18 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid #2a4b35;
     border-radius: 0.5rem;
     font-size: 1rem;
+    background-color: #22382b;
+    color: #e0e0e0;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4caf50;
 }
 
 .form-row {
@@ -755,8 +804,8 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: white;
-    border-top: 1px solid #e5e7eb;
+    background-color: #1a2c21;
+    border-top: 1px solid #2a4b35;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     z-index: 10;
@@ -769,7 +818,7 @@ body {
     background: none;
     border: none;
     padding: 0.5rem;
-    color: #6b7280;
+    color: #a5d6a7;
     font-size: 0.75rem;
     cursor: pointer;
 }
@@ -780,8 +829,8 @@ body {
 }
 
 .mobile-bottom-nav button.nav-active {
-    color: #6366f1;
-    background-color: #f0f1ff;
+    color: #4caf50;
+    background-color: #2a4b35;
 }
 
 /* Notification */
@@ -789,11 +838,11 @@ body {
     position: fixed;
     top: 1rem;
     right: 1rem;
-    background-color: #6366f1;
-    color: white;
+    background-color: #2e7d32;
+    color: #e8f5e9;
     padding: 1rem 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     z-index: 50;
@@ -807,6 +856,19 @@ body {
 
 .notification i {
     margin-right: 0.5rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #a5d6a7;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #2a4b35;
 }
 
 /* Responsive Styles */
@@ -862,9 +924,9 @@ body {
 }
 
 /* Priority indicators */
-.priority-high { border-left: 4px solid #ef4444; }
-.priority-medium { border-left: 4px solid #f59e0b; }
-.priority-low { border-left: 4px solid #10b981; }
+.priority-high { border-left: 4px solid #d32f2f; }
+.priority-medium { border-left: 4px solid #f57c00; }
+.priority-low { border-left: 4px solid #388e3c; }
 
 /* Custom scrollbar */
 .tasks-list::-webkit-scrollbar {
@@ -872,15 +934,15 @@ body {
 }
 
 .tasks-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #22382b;
     border-radius: 10px;
 }
 
 .tasks-list::-webkit-scrollbar-thumb {
-    background: #c5c5c5;
+    background: #2e7d32;
     border-radius: 10px;
 }
 
 .tasks-list::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
+    background: #4caf50;
 }
