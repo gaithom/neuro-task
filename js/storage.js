@@ -50,33 +50,7 @@ function initializeDefaultTasks() {
     const existingTasks = storage.get('neurotask-tasks');
     if (!existingTasks || existingTasks.length === 0) {
         const defaultTasks = [
-            {
-                id: 1,
-                title: "Finish quarterly financial report",
-                description: "Include projections and analysis of Q3 results",
-                priority: "high",
-                dueDate: new Date().toISOString().split('T')[0],
-                category: "work",
-                completed: false
-            },
-            {
-                id: 2,
-                title: "Team meeting with design department",
-                description: "Discuss new project requirements and timeline",
-                priority: "medium",
-                dueDate: new Date().toISOString().split('T')[0],
-                category: "work",
-                completed: false
-            },
-            {
-                id: 3,
-                title: "Send follow-up emails to clients",
-                description: "Check in about project feedback",
-                priority: "low",
-                dueDate: new Date().toISOString().split('T')[0],
-                category: "work",
-                completed: true
-            }
+           
         ];
         storage.set('neurotask-tasks', defaultTasks);
     }
