@@ -54,6 +54,7 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 .sb.desk-open .si-lbl,.sb.mob-open .si-lbl{opacity:1;transform:translateX(0)}
 .sb-sep{height:1px;background:var(--bd);margin:6px 14px;flex-shrink:0}
 .sb-bot{margin-top:auto;display:flex;flex-direction:column;gap:2px}
+.sb-close{display:none}
 .sb-theme{display:flex;align-items:center;height:40px;margin:1px 8px;border-radius:var(--rs);cursor:pointer;color:var(--tx2);overflow:hidden;flex-shrink:0;transition:background .15s,color .15s}
 .sb-theme:hover{background:var(--surf3);color:var(--tx)}
 .st-ico{width:44px;min-width:44px;height:40px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -228,12 +229,23 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   .bot-nav{display:flex}
   .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);width:var(--sb-open) !important;min-width:var(--sb-open) !important;box-shadow:6px 0 28px rgba(0,0,0,.18)}
   .sb.mob-open{transform:translateX(0)}
+  .sb-close{display:flex;position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:var(--surf2);border:1px solid var(--bd);align-items:center;justify-content:center;font-size:18px;color:var(--tx2);cursor:pointer;z-index:10}
+  .sb-close:hover{background:var(--surf3);color:var(--tx)}
   .hero{grid-template-columns:1fr;padding:16px 14px 0;gap:14px}
   .hero-stats{flex-direction:row;flex-wrap:wrap;align-items:stretch;gap:7px}
   .hs{flex:1;min-width:90px}
   .hero-h{font-size:clamp(38px,11vw,56px)}
   .hero-sub{display:none}
-  .toolbar{padding:12px 14px 0;gap:7px}
+  .toolbar{flex-direction:column;align-items:stretch;padding:12px 14px 0;gap:10px}
+  .add-wrapper{width:100%}
+  .add-bar{width:100%}
+  .add-inp{flex:1;min-width:0}
+  .picker-row{gap:10px}
+  .cat-chips{flex-wrap:wrap}
+  .cat-chip{font-size:14px;padding:6px 12px}
+  .pri-btn{font-size:14px;padding:7px 12px}
+  .add-date{width:100%;max-width:160px}
+  .toolbar>.btn{width:100%;justify-content:center}
   .filters{padding:10px 14px 0}
   .task-area{padding:10px 14px 90px}
   .t-del{opacity:1}
@@ -255,6 +267,7 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 <div class="app">
 
 <nav class="sb" id="sb">
+  <button type="button" class="sb-close" onclick="closeMob()">✕</button>
   <div class="sb-logo-row">
     <div class="sb-mark">M</div>
     <div class="sb-word">MIK<em>Ō</em></div>
@@ -731,7 +744,8 @@ function aiSuggest(){
     var ideas=['Audit all tasks for deadline conflicts','Prepare sprint review brief for end of week','Review team workload and rebalance assignments','Write UX audit report for onboarding flow'];
     var p=ideas[Math.floor(Math.random()*ideas.length)];
     document.getElementById('task-inp').value=p;
-    addAIMsg('Suggested: "'+p+'" — press Add when ready.');
+    togglePickers(p);
+    addAIMsg('Suggested: "'+p+'" — choose options below, then press Add.');
   },900);
 }
 function sendAI(){
