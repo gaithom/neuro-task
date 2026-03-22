@@ -8,7 +8,7 @@
 <style>
 :root{--ease:cubic-bezier(.4,0,.2,1);--sb:64px;--sb-open:230px;--pw:296px;--tbh:52px;--r:12px;--rs:8px;--rl:16px}
 [data-theme="light"]{--bg:#f1ede7;--surf:#faf8f5;--surf2:#ffffff;--surf3:#fff6f0;--bd:#e5dfd8;--bds:#ede8e2;--tx:#18110a;--tx2:#7a6e65;--tx3:#c2b9b0;--ac:#c2570a;--ac2:#a34808;--acd:rgba(194,87,10,.10);--acg:rgba(194,87,10,.18);--hi:#dc2626;--med:#b45309;--lo:#16a34a;--scrim:rgba(0,0,0,.30)}
-[data-theme="dark"]{--bg:#0c0d0f;--surf:#131416;--surf2:#1a1c1f;--surf3:#1f2124;--bd:#252830;--bds:#1c1e24;--tx:#edeef0;--tx2:#6c7280;--tx3:#343840;--ac:#22c55e;--ac2:#16a34a;--acd:rgba(34,197,94,.12);--acg:rgba(34,197,94,.20);--hi:#ef4444;--med:#f59e0b;--lo:#22c55e;--scrim:rgba(0,0,0,.60)}
+[data-theme="dark"]{--bg:#0c0d0f;--surf:#131416;--surf2:#1a1c1f;--surf3:#1f2124;--bd:#252830;--bds:#1c1e24;--tx:#edeef0;--tx2:#9ca3af;--tx3:#4b5563;--ac:#22c55e;--ac2:#16a34a;--acd:rgba(34,197,94,.12);--acg:rgba(34,197,94,.20);--hi:#ef4444;--med:#f59e0b;--lo:#22c55e;--scrim:rgba(0,0,0,.60)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;-webkit-text-size-adjust:100%}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);height:100%;overflow:hidden;transition:background .35s var(--ease),color .35s var(--ease)}
@@ -88,9 +88,13 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 .btn-primary:hover{background:var(--ac2);border-color:var(--ac2)}
 .filters{display:flex;gap:6px;padding:12px 28px 0;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch}
 .filters::-webkit-scrollbar{display:none}
-.chip{padding:5px 14px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;font-weight:500;color:var(--tx2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;background:none}
+.chip{padding:5px 14px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;font-weight:500;color:var(--tx2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;background:none;display:flex;align-items:center;gap:6px}
 .chip:hover{color:var(--tx);border-color:var(--tx3)}
 .chip.on{background:var(--acd);border-color:var(--ac);color:var(--ac);font-weight:600}
+.pri-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pri-high{background:var(--hi)}
+.pri-med{background:var(--med)}
+.pri-low{background:var(--lo)}
 .task-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:14px 28px 40px;display:flex;flex-direction:column;gap:6px}
 .sec-lbl{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);padding:6px 0 3px;flex-shrink:0}
 .sec-lbl::after{content:'';flex:1;height:1px;background:var(--bds)}
@@ -234,7 +238,7 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   <div class="sb-sec">Menu</div>
   <div class="sb-item active" data-filter="all"         onclick="navClick(this)"><span class="si-ico">☰</span><span class="si-lbl">All Tasks</span></div>
   <div class="sb-item"        data-filter="today"       onclick="navClick(this)"><span class="si-ico">◎</span><span class="si-lbl">Today</span></div>
-  <div class="sb-item"        data-filter="high"        onclick="navClick(this)"><span class="si-ico">🔴</span><span class="si-lbl">High Priority</span></div>
+  <div class="sb-item"        data-filter="high"        onclick="navClick(this)"><span class="si-ico">●</span><span class="si-lbl">High Priority</span></div>
   <div class="sb-item"        data-filter="done"        onclick="navClick(this)"><span class="si-ico">✓</span><span class="si-lbl">Completed</span></div>
   <div class="sb-sep"></div>
   <div class="sb-sec">Workspace</div>
@@ -286,9 +290,9 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 
   <div class="filters">
     <button class="chip on" data-filter="all"    onclick="chipClick(this)">All</button>
-    <button class="chip"    data-filter="high"   onclick="chipClick(this)">🔴 High</button>
-    <button class="chip"    data-filter="medium" onclick="chipClick(this)">🟡 Medium</button>
-    <button class="chip"    data-filter="low"    onclick="chipClick(this)">🟢 Low</button>
+    <button class="chip"    data-filter="high"   onclick="chipClick(this)"><span class="pri-dot pri-high"></span> High</button>
+    <button class="chip"    data-filter="medium" onclick="chipClick(this)"><span class="pri-dot pri-med"></span> Medium</button>
+    <button class="chip"    data-filter="low"    onclick="chipClick(this)"><span class="pri-dot pri-low"></span> Low</button>
     <button class="chip"    data-filter="ai"     onclick="chipClick(this)">✦ AI</button>
     <button class="chip"    data-filter="done"   onclick="chipClick(this)">✓ Done</button>
   </div>
@@ -306,7 +310,7 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   <div class="bot-nav">
     <div class="bn active" data-filter="all"   onclick="bottomNav(this)"><span class="bn-ico">☰</span><span class="bn-lbl">Tasks</span></div>
     <div class="bn"        data-filter="today" onclick="bottomNav(this)"><span class="bn-ico">◎</span><span class="bn-lbl">Today</span></div>
-    <div class="bn"        data-filter="high"  onclick="bottomNav(this)"><span class="bn-ico">🔴</span><span class="bn-lbl">Priority</span></div>
+    <div class="bn"        data-filter="high"  onclick="bottomNav(this)"><span class="bn-ico">●</span><span class="bn-lbl">Priority</span></div>
     <div class="bn"                            onclick="togglePanel()">  <span class="bn-ico">✦</span><span class="bn-lbl">AI</span></div>
   </div>
 </div>
