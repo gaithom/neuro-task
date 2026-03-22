@@ -247,10 +247,10 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
       <span class="st-lbl" id="theme-lbl">Dark Mode</span>
     </button>
     <div class="sb-user-row">
-      <div class="sb-av">MG</div>
+      <div class="sb-av">U</div>
       <div class="sb-uinfo">
-        <div class="sb-uname">Michael Gaitho</div>
-        <div class="sb-urole">OWNER · DESIGNER</div>
+        <div class="sb-uname">User</div>
+        <div class="sb-urole">MIKŌ USER</div>
       </div>
     </div>
   </div>
@@ -266,7 +266,7 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
     <div>
       <div class="hero-eye" id="hero-date">LOADING…</div>
       <div class="hero-h">YOUR<br><span>TASKS</span></div>
-      <div class="hero-sub">Stay sharp, Michael. <span id="undone-ct">0</span> tasks remaining — let's move.</div>
+      <div class="hero-sub">Welcome to MIKŌ. Add your first task to get started.</div>
     </div>
     <div class="hero-stats">
       <div class="hs"><div class="hs-dot" style="background:var(--hi)"></div><div><div class="hs-n" id="s-high">0</div><div class="hs-l">High priority</div></div></div>
@@ -294,50 +294,12 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   </div>
 
   <div class="task-area" id="task-area">
-    <div class="sec-lbl" id="lbl-progress">In Progress</div>
+    <div class="sec-lbl" id="lbl-progress">Tasks</div>
 
-    <div class="task" data-p="high" data-ai="true" data-tag="design" style="animation-delay:.04s">
-      <div class="tchk" onclick="toggleDone(this)"></div>
-      <div class="t-body"><div class="t-name">Redesign onboarding screen for mobile users</div><div class="t-meta"><span class="t-tag">Design</span><span class="t-ai">✦ AI</span><span class="t-due late">📅 Overdue</span></div></div>
-      <button class="t-del" onclick="delTask(this)">✕</button>
-    </div>
-
-    <div class="task" data-p="high" data-tag="engineering" style="animation-delay:.07s">
-      <div class="tchk" onclick="toggleDone(this)"></div>
-      <div class="t-body"><div class="t-name">Review API rate limiting strategy with backend team</div><div class="t-meta"><span class="t-tag">Engineering</span><span class="t-due">📅 Today, 3 PM</span></div></div>
-      <button class="t-del" onclick="delTask(this)">✕</button>
-    </div>
-
-    <div class="task" data-p="medium" data-ai="true" data-tag="design" style="animation-delay:.10s">
-      <div class="tchk" onclick="toggleDone(this)"></div>
-      <div class="t-body"><div class="t-name">Finalize design system color tokens v2.1</div><div class="t-meta"><span class="t-tag">Design</span><span class="t-ai">✦ AI</span><span class="t-due">📅 Friday</span></div></div>
-      <button class="t-del" onclick="delTask(this)">✕</button>
-    </div>
-
-    <div class="task" data-p="medium" data-tag="engineering" style="animation-delay:.13s">
-      <div class="tchk" onclick="toggleDone(this)"></div>
-      <div class="t-body"><div class="t-name">Set up regression test suite for all auth flows</div><div class="t-meta"><span class="t-tag">Engineering</span><span class="t-due">📅 Next week</span></div></div>
-      <button class="t-del" onclick="delTask(this)">✕</button>
-    </div>
-
-    <div class="task" data-p="low" data-tag="engineering" style="animation-delay:.16s">
-      <div class="tchk" onclick="toggleDone(this)"></div>
-      <div class="t-body"><div class="t-name">Update REST API documentation in Notion</div><div class="t-meta"><span class="t-tag">Docs</span><span class="t-due">📅 Apr 1</span></div></div>
-      <button class="t-del" onclick="delTask(this)">✕</button>
-    </div>
-
-    <div class="sec-lbl" id="lbl-done">Completed</div>
-
-    <div class="task done" data-p="medium" data-tag="design" style="animation-delay:.19s">
-      <div class="tchk on" onclick="toggleDone(this)"></div>
-      <div class="t-body"><div class="t-name">Write Q2 email campaign copy</div><div class="t-meta"><span class="t-tag">Marketing</span><span class="t-due">✓ Done earlier</span></div></div>
-      <button class="t-del" onclick="delTask(this)">✕</button>
-    </div>
-
-    <div class="empty-state" id="empty-state">
-      <div class="e-ico">📭</div>
-      <div>No tasks match this filter</div>
-      <div style="font-size:12px;margin-top:4px">Try a different filter or add a new task above</div>
+    <div class="empty-state show" id="empty-state">
+      <div class="e-ico">📝</div>
+      <div>No tasks yet</div>
+      <div style="font-size:12px;margin-top:4px">Add your first task above to get started</div>
     </div>
   </div>
 
@@ -354,8 +316,8 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 <aside class="panel" id="panel">
   <div class="panel-scroll" id="panel-scroll">
     <div>
-      <div class="p-greet" id="p-greet">GOOD MORNING,</div>
-      <div class="p-date">Michael Gaitho · Let's make it count.</div>
+      <div class="p-greet" id="p-greet">WELCOME TO</div>
+      <div class="p-date">MIKŌ · Task Intelligence</div>
     </div>
     <div class="arc-card">
       <div class="arc-wrap">
@@ -372,10 +334,10 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
       </div>
     </div>
     <div class="streak-card">
-      <div class="streak-head"><div class="streak-title">This Week</div><div class="streak-val">🔥 4-day streak</div></div>
+      <div class="streak-head"><div class="streak-title">This Week</div><div class="streak-val">Start fresh!</div></div>
       <div class="streak-grid">
-        <div class="sd on"></div><div class="sd on"></div><div class="sd on"></div>
-        <div class="sd on"></div><div class="sd partial"></div><div class="sd"></div><div class="sd"></div>
+        <div class="sd"></div><div class="sd"></div><div class="sd"></div>
+        <div class="sd"></div><div class="sd"></div><div class="sd"></div><div class="sd"></div>
       </div>
       <div class="streak-lbls">
         <div class="sd-l">M</div><div class="sd-l">T</div><div class="sd-l">W</div>
@@ -396,11 +358,8 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
     <div class="ai-msgs" id="ai-msgs">
       <div class="ai-bub">
         <div class="ai-lbl">MIKŌ AI</div>
-        Hey Michael! 2 tasks are overdue. Your focus peak is Tue 9–11 AM — I've blocked that for deep work.
+        Hello! I'm your AI task assistant. Add your first task and I'll help you organize, prioritize, and stay on track.
       </div>
-      <div class="ai-hint" onclick="applyHint(this)"><span class="h-ico">💡</span><span>Move "API rate limiting" to today 3 PM — it's blocking 2 teammates.</span></div>
-      <div class="ai-hint" onclick="applyHint(this)"><span class="h-ico">🔁</span><span>Break "Onboarding redesign" into 4 subtasks? ~3h total.</span></div>
-      <div class="ai-hint" onclick="applyHint(this)"><span class="h-ico">⚠️</span><span>Deadline conflict Friday — 2 tasks clash. Reschedule one?</span></div>
     </div>
   </div>
   <div class="panel-foot">
@@ -559,7 +518,16 @@ function delTask(btn){
   var t=btn.closest('.task');
   t.style.transition='opacity .22s,transform .22s';
   t.style.opacity='0';t.style.transform='translateX(16px)';
-  setTimeout(function(){t.remove();applyFilter(curFilter);},230);
+  setTimeout(function(){
+    t.remove();
+    applyFilter(curFilter);
+    // Show empty state if no tasks left
+    var all=document.querySelectorAll('.task');
+    if(all.length===0){
+      var es=document.getElementById('empty-state');
+      if(es)es.classList.add('show');
+    }
+  },230);
 }
 function addTask(){
   var inp=document.getElementById('task-inp');
@@ -568,8 +536,19 @@ function addTask(){
   t.className='task';t.dataset.p='low';t.dataset.tag='design';
   t.innerHTML='<div class="tchk" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name">'+esc(val)+'</div><div class="t-meta"><span class="t-tag">Personal</span><span class="t-due">📅 No date</span></div></div><button class="t-del" onclick="delTask(this)">✕</button>';
   var area=document.getElementById('task-area');
-  var ld=document.getElementById('lbl-done');
-  if(ld)area.insertBefore(t,ld);else area.insertBefore(t,document.getElementById('empty-state'));
+  var es=document.getElementById('empty-state');
+  var lp=document.getElementById('lbl-progress');
+  
+  // Hide empty state when adding first task
+  if(es)es.classList.remove('show');
+  
+  // Insert after the "Tasks" label
+  if(lp && lp.nextSibling){
+    area.insertBefore(t,lp.nextSibling);
+  }else{
+    area.appendChild(t);
+  }
+  
   inp.value='';
   applyFilter(curFilter);
   setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
@@ -590,10 +569,10 @@ function updateStats(){
 }
 function qAct(k){
   var n=document.querySelectorAll('.task').length;
-  var m={prioritize:'Reprioritized by deadline & impact. "API Review" is your #1, Michael.',schedule:'Peak window: Tue 9–11 AM. "Onboarding redesign" scheduled then.',breakdown:'"Onboarding" → ① Audit ② UX patterns ③ Wireframes ④ Prototype. ~3h total.',summary:'You have '+n+' tasks total. 2 high-priority. Weekly rate: 68%. Keep it up!'};
+  var m={prioritize:n>0?'Reprioritized by deadline & impact. Your highest priority task is now #1.':'Add some tasks first, then I can help prioritize them.',schedule:n>0?'Peak window: Tue 9–11 AM. Consider scheduling deep work then.':'Once you have tasks, I can suggest the best times to work on them.',breakdown:n>0?'Break down larger tasks into subtasks for better progress tracking.':'Add a task and I can help break it into manageable pieces.',summary:'You have '+n+' tasks total. '+ (n>0?'Keep it up!':'Add your first task to get started!') };
   addAIMsg(m[k]||'Processing…');
 }
-function applyHint(el){el.classList.add('used');addAIMsg('Applied! Your schedule has been updated, Michael.');}
+function applyHint(el){el.classList.add('used');addAIMsg('Applied! Your schedule has been updated.');}
 function aiSuggest(){
   showTyping();
   setTimeout(function(){
@@ -608,7 +587,7 @@ function sendAI(){
   var inp=document.getElementById('ai-inp'),val=inp.value.trim();if(!val)return;
   addUserBub(val);inp.value='';inp.style.height='auto';
   showTyping();
-  var r=["Got it, Michael! I've updated the schedule.","Done. I flagged 2 related tasks to bundle.","Based on your workload, tackle high-priority items first tomorrow.","You're at great pace! Two more tasks today keeps you on track.","Want me to reorganise by project, deadline, or priority?"];
+  var r=["Got it! I've noted that.","Done. I'll keep that in mind.","Thanks for the update!","Understood. I'll factor that into your productivity insights.","Noted! Anything else I can help with?"];
   setTimeout(function(){removeTyping();addAIMsg(r[Math.floor(Math.random()*r.length)]);},1200);
 }
 function addAIMsg(text){
