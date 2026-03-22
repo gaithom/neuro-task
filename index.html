@@ -1,298 +1,628 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroTask - AI Task Manager</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MIKŌ — Task Intelligence by Michael Gaitho</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ease:cubic-bezier(.4,0,.2,1);--sb:64px;--sb-open:230px;--pw:296px;--tbh:52px;--r:12px;--rs:8px;--rl:16px}
+[data-theme="light"]{--bg:#f1ede7;--surf:#faf8f5;--surf2:#ffffff;--surf3:#fff6f0;--bd:#e5dfd8;--bds:#ede8e2;--tx:#18110a;--tx2:#7a6e65;--tx3:#c2b9b0;--ac:#c2570a;--ac2:#a34808;--acd:rgba(194,87,10,.10);--acg:rgba(194,87,10,.18);--hi:#dc2626;--med:#b45309;--lo:#16a34a;--scrim:rgba(0,0,0,.30)}
+[data-theme="dark"]{--bg:#0c0d0f;--surf:#131416;--surf2:#1a1c1f;--surf3:#1f2124;--bd:#252830;--bds:#1c1e24;--tx:#edeef0;--tx2:#6c7280;--tx3:#343840;--ac:#22c55e;--ac2:#16a34a;--acd:rgba(34,197,94,.12);--acg:rgba(34,197,94,.20);--hi:#ef4444;--med:#f59e0b;--lo:#22c55e;--scrim:rgba(0,0,0,.60)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);height:100%;overflow:hidden;transition:background .35s var(--ease),color .35s var(--ease)}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+input,textarea{font-family:inherit;outline:none;border:none;background:none;color:var(--tx)}
+input::placeholder,textarea::placeholder{color:var(--tx3)}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+#scrim{position:fixed;inset:0;z-index:600;background:var(--scrim);display:none;opacity:0;transition:opacity .28s var(--ease)}
+#scrim.on{opacity:1}
+#goto-top{position:fixed;bottom:24px;right:22px;width:40px;height:40px;border-radius:50%;background:var(--ac);color:#fff;font-size:16px;display:grid;place-items:center;cursor:pointer;z-index:200;box-shadow:0 4px 16px var(--acg);opacity:0;pointer-events:none;transition:opacity .25s,background .18s,transform .18s}
+#goto-top.show{opacity:1;pointer-events:auto}
+#goto-top:hover{background:var(--ac2);transform:translateY(-2px)}
+.app{display:flex;height:100vh;height:100dvh;overflow:hidden;position:relative}
+.sb{width:var(--sb);min-width:var(--sb);flex-shrink:0;background:var(--surf);border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:16px 0 18px;gap:2px;overflow:hidden;z-index:700;transition:width .3s var(--ease),min-width .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
+.sb.desk-open{width:var(--sb-open);min-width:var(--sb-open)}
+.sb-logo-row{display:flex;align-items:center;height:40px;padding:0 14px;gap:10px;flex-shrink:0;margin-bottom:8px;overflow:hidden}
+.sb-mark{width:36px;height:36px;min-width:36px;background:var(--ac);border-radius:10px;display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;flex-shrink:0;transition:box-shadow .25s}
+.sb-mark:hover{box-shadow:0 0 0 5px var(--acg)}
+.sb-word{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--tx);white-space:nowrap;overflow:hidden;opacity:0;transform:translateX(-6px);transition:opacity .18s .04s,transform .18s .04s}
+.sb-word em{color:var(--ac);font-style:normal}
+.sb.desk-open .sb-word,.sb.mob-open .sb-word{opacity:1;transform:translateX(0)}
+.sb-toggle{display:flex;align-items:center;height:36px;margin:0 10px 8px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--surf2);cursor:pointer;color:var(--tx2);overflow:hidden;flex-shrink:0;transition:background .18s,border-color .18s,color .18s}
+.sb-toggle:hover{background:var(--acd);color:var(--ac);border-color:var(--ac)}
+.sb-toggle-ico{width:44px;min-width:44px;height:36px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:transform .3s var(--ease)}
+.sb.desk-open .sb-toggle-ico,.sb.mob-open .sb-toggle-ico{transform:rotate(180deg)}
+.sb-toggle-lbl{font-size:13px;font-weight:500;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
+.sb.desk-open .sb-toggle-lbl,.sb.mob-open .sb-toggle-lbl{opacity:1}
+.sb-sec{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);padding:0 16px;flex-shrink:0;height:0;opacity:0;overflow:hidden;transition:height .2s,opacity .15s,padding .2s}
+.sb.desk-open .sb-sec,.sb.mob-open .sb-sec{height:26px;opacity:1;padding-top:8px;padding-bottom:2px}
+.sb-item{display:flex;align-items:center;height:40px;margin:1px 8px;border-radius:var(--rs);cursor:pointer;color:var(--tx2);overflow:hidden;white-space:nowrap;flex-shrink:0;position:relative;transition:background .15s,color .15s;user-select:none;-webkit-tap-highlight-color:transparent}
+.sb-item:hover{background:var(--surf3);color:var(--tx)}
+.sb-item.active{background:var(--acd);color:var(--ac)}
+.sb-item.active::after{content:'';position:absolute;right:0;top:7px;bottom:7px;width:2.5px;background:var(--ac);border-radius:3px 0 0 3px}
+.si-ico{width:44px;min-width:44px;height:40px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.si-lbl{font-size:13.5px;font-weight:500;overflow:hidden;opacity:0;transform:translateX(-4px);transition:opacity .18s .04s,transform .18s .04s}
+.sb.desk-open .si-lbl,.sb.mob-open .si-lbl{opacity:1;transform:translateX(0)}
+.sb-sep{height:1px;background:var(--bd);margin:6px 14px;flex-shrink:0}
+.sb-bot{margin-top:auto;display:flex;flex-direction:column;gap:2px}
+.sb-theme{display:flex;align-items:center;height:40px;margin:1px 8px;border-radius:var(--rs);cursor:pointer;color:var(--tx2);overflow:hidden;flex-shrink:0;transition:background .15s,color .15s}
+.sb-theme:hover{background:var(--surf3);color:var(--tx)}
+.st-ico{width:44px;min-width:44px;height:40px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.st-lbl{font-size:13.5px;font-weight:500;overflow:hidden;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:opacity .18s .04s,transform .18s .04s}
+.sb.desk-open .st-lbl,.sb.mob-open .st-lbl{opacity:1;transform:translateX(0)}
+.sb-user-row{display:flex;align-items:center;height:52px;padding:0 8px;gap:10px;overflow:hidden;flex-shrink:0;border-top:1px solid var(--bds);margin-top:6px}
+.sb-av{width:36px;height:36px;min-width:36px;border-radius:50%;background:var(--ac);display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.sb-uinfo{overflow:hidden;opacity:0;transform:translateX(-4px);transition:opacity .18s .06s,transform .18s .06s}
+.sb.desk-open .sb-uinfo,.sb.mob-open .sb-uinfo{opacity:1;transform:translateX(0)}
+.sb-uname{font-size:13px;font-weight:600;color:var(--tx);white-space:nowrap}
+.sb-urole{font-size:10px;color:var(--tx3);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.topbar{display:none;height:var(--tbh);background:var(--surf);border-bottom:1px solid var(--bd);align-items:center;padding:0 14px;gap:10px;flex-shrink:0;z-index:10}
+.tb-ham{width:38px;height:38px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--surf2);display:grid;place-items:center;font-size:17px;color:var(--tx2);flex-shrink:0;transition:border-color .18s,color .18s}
+.tb-ham:hover{border-color:var(--ac);color:var(--ac)}
+.tb-brand{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--tx)}
+.tb-brand span{color:var(--ac)}
+.hero{padding:28px 28px 0;display:grid;grid-template-columns:1fr auto;align-items:end;gap:16px;flex-shrink:0}
+.hero-eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);margin-bottom:6px}
+.hero-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,5.5vw,76px);line-height:.9;color:var(--tx);letter-spacing:1px}
+.hero-h span{color:var(--ac)}
+.hero-sub{font-size:13px;color:var(--tx2);margin-top:10px;line-height:1.55;max-width:380px}
+.hero-stats{display:flex;flex-direction:column;align-items:flex-end;gap:7px;padding-bottom:4px}
+.hs{display:flex;align-items:center;gap:9px;background:var(--surf);border:1px solid var(--bd);border-radius:40px;padding:6px 14px 6px 10px}
+.hs-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.hs-n{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:var(--tx)}
+.hs-n.ac{color:var(--ac)}
+.hs-l{font-size:11px;color:var(--tx2)}
+.toolbar{display:flex;align-items:center;gap:8px;padding:18px 28px 0;border-top:1px solid var(--bds);margin-top:18px;flex-shrink:0}
+.add-bar{flex:1;display:flex;align-items:center;gap:8px;background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--r);padding:9px 14px;transition:border-color .2s;min-width:0}
+.add-bar:focus-within{border-color:var(--ac)}
+.add-plus{font-size:20px;color:var(--tx3);line-height:1;flex-shrink:0}
+.add-inp{flex:1;font-size:14px;min-width:0}
+.btn{height:42px;border-radius:var(--rs);border:1.5px solid var(--bd);background:var(--surf);font-size:13px;font-weight:600;color:var(--tx2);padding:0 16px;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0;transition:all .18s}
+.btn:hover{border-color:var(--tx3);color:var(--tx)}
+.btn-primary{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn-primary:hover{background:var(--ac2);border-color:var(--ac2)}
+.filters{display:flex;gap:6px;padding:12px 28px 0;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch}
+.filters::-webkit-scrollbar{display:none}
+.chip{padding:5px 14px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;font-weight:500;color:var(--tx2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;background:none}
+.chip:hover{color:var(--tx);border-color:var(--tx3)}
+.chip.on{background:var(--acd);border-color:var(--ac);color:var(--ac);font-weight:600}
+.task-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:14px 28px 40px;display:flex;flex-direction:column;gap:6px}
+.sec-lbl{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);padding:6px 0 3px;flex-shrink:0}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--bds)}
+.task{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;background:var(--surf);border:1.5px solid var(--bds);border-radius:var(--rl);position:relative;overflow:hidden;flex-shrink:0;transition:border-color .2s,background .2s,transform .2s,box-shadow .2s;animation:rise .3s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.task::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:var(--rl) 0 0 var(--rl);opacity:.5;transition:opacity .2s}
+.task[data-p="high"]::before{background:var(--hi)}
+.task[data-p="medium"]::before{background:var(--med)}
+.task[data-p="low"]::before{background:var(--lo)}
+.task:hover{border-color:var(--bd);background:var(--surf2);transform:translateX(3px);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.task:hover::before{opacity:1}
+.task.done{opacity:.45}
+.task.done .t-name{text-decoration:line-through;color:var(--tx2)}
+.tchk{width:22px;height:22px;min-width:22px;border-radius:50%;border:1.5px solid var(--bd);display:grid;place-items:center;flex-shrink:0;cursor:pointer;background:var(--bg);margin-top:1px;transition:all .18s;-webkit-tap-highlight-color:transparent}
+.tchk:hover{border-color:var(--tx3)}
+.tchk.on{background:var(--ac);border-color:var(--ac)}
+.tchk.on::after{content:'✓';font-size:11px;color:#fff;font-weight:700}
+.t-body{flex:1;min-width:0}
+.t-name{font-size:14px;font-weight:500;color:var(--tx);margin-bottom:5px;line-height:1.35;word-break:break-word}
+.t-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.t-tag{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--bd);color:var(--tx3);background:var(--bg)}
+.t-ai{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--ac);color:var(--ac);background:var(--acd)}
+.t-due{font-size:11px;color:var(--tx3)}
+.t-due.late{color:var(--hi)}
+.t-del{width:28px;height:28px;border-radius:6px;border:1px solid transparent;color:var(--tx3);font-size:13px;display:grid;place-items:center;cursor:pointer;flex-shrink:0;opacity:0;transition:all .15s}
+.task:hover .t-del{opacity:1}
+.t-del:hover{background:rgba(220,38,38,.08);border-color:var(--hi);color:var(--hi)}
+.empty-state{display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--tx3);font-size:14px;gap:8px;text-align:center;flex-shrink:0}
+.empty-state.show{display:flex}
+.e-ico{font-size:40px;margin-bottom:4px}
+.panel{width:var(--pw);min-width:var(--pw);flex-shrink:0;background:var(--surf);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;z-index:650;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.panel-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px;display:flex;flex-direction:column;gap:12px}
+.panel-scroll::-webkit-scrollbar{display:none}
+.p-greet{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;color:var(--tx);margin-bottom:2px}
+.p-date{font-size:11px;color:var(--tx2)}
+.arc-card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rl);padding:16px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.arc-wrap{position:relative;width:62px;height:62px;flex-shrink:0}
+.arc-svg{transform:rotate(-90deg)}
+.arc-bg{fill:none;stroke:var(--bd);stroke-width:4}
+.arc-fill{fill:none;stroke:var(--ac);stroke-width:4;stroke-linecap:round;stroke-dasharray:163;stroke-dashoffset:163;transition:stroke-dashoffset .7s var(--ease)}
+.arc-pct{position:absolute;inset:0;display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--ac)}
+.arc-title{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:3px}
+.arc-sub{font-size:11px;color:var(--tx2)}
+.arc-fire{font-size:11px;color:var(--ac);margin-top:3px}
+.streak-card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rl);padding:14px 16px;flex-shrink:0}
+.streak-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.streak-title{font-size:12px;font-weight:600;color:var(--tx)}
+.streak-val{font-size:12px;color:var(--tx2)}
+.streak-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:5px}
+.streak-lbls{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.sd{aspect-ratio:1;border-radius:5px;background:var(--bds);cursor:pointer;transition:all .2s}
+.sd.on{background:var(--ac)}
+.sd.partial{background:var(--acd);border:1px solid var(--ac)}
+.sd-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--tx3);text-align:center}
+.ai-head{display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--bds);flex-shrink:0}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--ac);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:13px;font-weight:600;color:var(--tx)}
+.ai-sub{font-size:11px;color:var(--tx2);margin-left:auto}
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex-shrink:0}
+.ai-qbtn{background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);padding:8px 10px;font-size:12px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
+.ai-qbtn:hover{border-color:var(--tx3);color:var(--tx);background:var(--surf2)}
+.ai-msgs{display:flex;flex-direction:column;gap:7px;max-height:220px;overflow-y:auto;flex-shrink:0}
+.ai-msgs::-webkit-scrollbar{display:none}
+.ai-bub{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:10px 12px;font-size:12.5px;line-height:1.55;color:var(--tx2);animation:rise .3s var(--ease) both;flex-shrink:0}
+.ai-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx3);margin-bottom:4px}
+.ai-hint{background:var(--acd);border:1px solid var(--bd);border-radius:var(--rs);padding:9px 11px;font-size:12px;color:var(--tx);cursor:pointer;display:flex;gap:8px;align-items:flex-start;transition:border-color .15s;animation:rise .3s var(--ease) both;flex-shrink:0}
+.ai-hint:hover{border-color:var(--ac)}
+.ai-hint.used{opacity:.4;pointer-events:none}
+.h-ico{color:var(--ac);flex-shrink:0;line-height:1.6}
+.user-bub{background:var(--surf2);border:1px solid var(--bd);border-radius:var(--r);padding:9px 12px;font-size:12.5px;color:var(--tx);text-align:right;animation:rise .3s var(--ease) both;flex-shrink:0}
+.typing-bub{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:12px 14px;display:flex;gap:4px;align-items:center;flex-shrink:0}
+.td{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:bounce 1.2s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.2s}
+.td:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.panel-foot{padding:10px 14px;border-top:1px solid var(--bd);display:flex;gap:7px;align-items:flex-end;flex-shrink:0}
+.p-inp{flex:1;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);padding:8px 12px;font-size:13px;resize:none;min-height:36px;max-height:80px;transition:border-color .2s;color:var(--tx)}
+.p-inp::placeholder{color:var(--tx3)}
+.p-inp:focus{border-color:var(--ac)}
+.p-send{width:36px;height:36px;border-radius:var(--rs);background:var(--ac);color:#fff;font-size:16px;display:grid;place-items:center;flex-shrink:0;transition:background .2s}
+.p-send:hover{background:var(--ac2)}
+.bot-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surf);border-top:1px solid var(--bd);z-index:300;padding:6px 0 max(6px,env(safe-area-inset-bottom));justify-content:space-around}
+.bn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 14px;cursor:pointer;color:var(--tx3);border-radius:var(--rs);transition:color .15s;user-select:none;-webkit-tap-highlight-color:transparent}
+.bn .bn-ico{font-size:20px}
+.bn .bn-lbl{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.3px}
+.bn.active{color:var(--ac)}
+.ai-fab{display:none;position:fixed;bottom:74px;right:16px;width:48px;height:48px;border-radius:50%;background:var(--ac);color:#fff;font-size:20px;align-items:center;justify-content:center;cursor:pointer;z-index:100;box-shadow:0 4px 18px var(--acg);border:none;transition:background .2s,transform .2s}
+.ai-fab:hover{background:var(--ac2);transform:scale(1.05)}
+@media(max-width:900px){
+  :root{--pw:282px}
+  .panel{position:fixed;right:0;top:0;bottom:0;transform:translateX(100%);box-shadow:-6px 0 28px rgba(0,0,0,.12)}
+  .panel.panel-open{transform:translateX(0)}
+  .ai-fab{display:flex}
+  #goto-top{bottom:80px;right:16px}
+  .hero{padding:22px 20px 0}
+  .toolbar{padding:14px 20px 0}
+  .filters{padding:10px 20px 0}
+  .task-area{padding:12px 20px 80px}
+}
+@media(max-width:600px){
+  .topbar{display:flex}
+  .bot-nav{display:flex}
+  .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);width:var(--sb-open) !important;min-width:var(--sb-open) !important;box-shadow:6px 0 28px rgba(0,0,0,.18)}
+  .sb.mob-open{transform:translateX(0)}
+  .hero{grid-template-columns:1fr;padding:16px 14px 0;gap:14px}
+  .hero-stats{flex-direction:row;flex-wrap:wrap;align-items:stretch;gap:7px}
+  .hs{flex:1;min-width:90px}
+  .hero-h{font-size:clamp(38px,11vw,56px)}
+  .hero-sub{display:none}
+  .toolbar{padding:12px 14px 0;gap:7px}
+  .filters{padding:10px 14px 0}
+  .task-area{padding:10px 14px 90px}
+  .t-del{opacity:1}
+  .t-name{white-space:normal}
+  #goto-top{bottom:72px;right:14px;width:38px;height:38px;font-size:14px}
+  .ai-fab{bottom:68px;right:14px;width:44px;height:44px;font-size:18px}
+}
+@media(min-width:901px) and (max-width:1140px){
+  .hero-stats{display:none}
+  .hero{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="logo" onclick="app.showPage('dashboard')">
-                <div class="logo-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h1>NeuroTask</h1>
-            </div>
-            <div class="desktop-nav">
-                <button class="btn-primary" type="button" onclick="app.showPage('add-task')">
-                    <i class="fas fa-plus"></i> New Task
-                </button>
-                <div class="user-avatar">JS</div>
-            </div>
-            <button type="button" id="mobile-menu-button" class="mobile-menu-btn" aria-label="Toggle menu">
-                <i class="fas fa-bars"></i>
-                <span class="sr-only">Menu</span>
-            </button>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu">
-            <div class="mobile-nav">
-                <button type="button" class="nav-active" onclick="app.showPage('dashboard')">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </button>
-                <button type="button" onclick="app.showPage('tasks')">
-                    <i class="fas fa-tasks"></i>
-                    <span>Tasks</span>
-                </button>
-                <button type="button" onclick="app.showPage('insights')">
-                    <i class="fas fa-chart-pie"></i>
-                    <span>Insights</span>
-                </button>
-                <button type="button" onclick="app.showPage('add-task')">
-                    <i class="fas fa-plus"></i>
-                    <span>Add</span>
-                </button>
-            </div>
-        </div>
-    </header>
 
-    <main class="container main-content">
-        <!-- Dashboard Page -->
-        <div id="dashboard" class="page active-page">
-            <div class="page-content">
-                <!-- Left Column - Task Input -->
-                <div class="left-column">
-                    <div class="card">
-                        <h2>Create New Task</h2>
-                        <div class="input-group">
-                            <label>Describe your task naturally</label>
-                            <div class="input-with-button">
-                                <textarea id="taskInput" rows="3" placeholder="E.g.: I need to finish the quarterly report by Friday 2pm and share it with my team"></textarea>
-                                <button type="button" onclick="taskManager.processTask()" aria-label="Send task">
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="tip-box">
-                            <i class="fas fa-lightbulb"></i>
-                            <p>Try</p>
-                        </div>
-                        <div class="ai-suggestions">
-                            <h3>AI Suggestions</h3>
-                            <div class="suggestion-grid">
-                                <div class="suggestion-item" type="button" onclick="aiService.suggestSubtasks()">
-                                    <i class="fas fa-magic"></i> Break into subtasks
-                                </div>
-                                <div class="suggestion-item" type="button" onclick="aiService.suggestDeadline()">
-                                    <i class="fas fa-clock"></i> Suggest deadline
-                                </div>
-                                <div class="suggestion-item" type="button" onclick="aiService.prioritizeTasks()">
-                                    <i class="fas fa-list-ol"></i> Prioritize
-                                </div>
-                                <div class="suggestion-item" type="button" onclick="aiService.suggestLabels()">
-                                    <i class="fas fa-tags"></i> Add labels
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-primary full-width" onclick="aiService.analyzeTask()">
-                            <i class="fas fa-robot"></i> AI Analyze Task
-                        </button>
-                    </div>
-                    <div class="card">
-                        <h2>AI Assistant</h2>
-                        <div class="ai-message">
-                            <div class="ai-avatar">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <p>Hello! I'm your productivity assistant. I can help you plan your day, prioritize tasks, and provide insights about your workload.</p>
-                        </div>
-                        <div class="ai-actions">
-                            <button type="button" onclick="aiService.suggestTodayWork()">
-                                <i class="fas fa-calendar-check"></i>
-                                <span>What should I work on today?</span>
-                            </button>
-                            <button type="button" onclick="aiService.generateReport()">
-                                <i class="fas fa-chart-pie"></i>
-                                <span>Give me a productivity report</span>
-                            </button>
-                            <button type="button" onclick="aiService.prioritizeAllTasks()">
-                                <i class="fas fa-tasks"></i>
-                                <span>Help me prioritize my tasks</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Middle Column - Task List -->
-                <div class="right-column">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>Today's Tasks</h2>
-                            <div class="action-buttons">
-                                <button type="button" onclick="taskManager.filterTasks()">
-                                    <i class="fas fa-filter"></i> Filter
-                                </button>
-                                <button type="button" onclick="taskManager.sortTasks()">
-                                    <i class="fas fa-sort"></i> Sort
-                                </button>
-                            </div>
-                        </div>
-                        <div id="tasks-container" class="tasks-list">
-                            <!-- Tasks will be dynamically inserted here -->
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h2>Productivity Insights</h2>
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <p class="stat-value" id="completed-count">0</p>
-                                    <p class="stat-label">Completed Tasks</p>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-bolt"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <p class="stat-value" id="productivity-score">0%</p>
-                                    <p class="stat-label">Productivity Score</p>
-                                </div>
-                            </div>
+<div id="scrim"></div>
+<button id="goto-top" aria-label="Scroll to top">↑</button>
 
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <p class="stat-value" id="focus-time">0h</p>
-                                    <p class="stat-label">Focus Time</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ai-analysis">
-                            <div class="ai-avatar">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <div class="analysis-content">
-                                <p class="analysis-title">AI Analysis</p>
-                                <p id="ai-analysis">You have no tasks yet. Add some tasks to get AI insights!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="app">
 
-        <!-- Tasks Page -->
-        <div id="tasks" class="page">
-            <div class="card">
-                <h2>All Tasks</h2>
-                <div class="filter-buttons">
-                    <button type="button" class="filter-active" onclick="taskManager.showAllTasks()">All</button>
-                    <button type="button" onclick="taskManager.filterTasksByStatus('active')">Active</button>
-                    <button type="button" onclick="taskManager.filterTasksByStatus('completed')">Completed</button>
-                    <button type="button" onclick="taskManager.filterTasksByPriority('high')">High Priority</button>
-                    <button type="button" onclick="taskManager.filterTasksByDate('today')">Today</button>
-                </div>
-                <div id="all-tasks-container" class="tasks-list">
-                    <!-- All tasks will be dynamically inserted here -->
-                </div>
-            </div>
-        </div>
+<nav class="sb" id="sb">
+  <div class="sb-logo-row">
+    <div class="sb-mark">M</div>
+    <div class="sb-word">MIK<em>Ō</em></div>
+  </div>
+  <button class="sb-toggle" onclick="toggleDesk()">
+    <span class="sb-toggle-ico"></span>
+    <span class="sb-toggle-lbl" id="sb-lbl">Expand</span>
+  </button>
+  <div class="sb-sec">Menu</div>
+  <div class="sb-item active" data-filter="all"         onclick="navClick(this)"><span class="si-ico">☰</span><span class="si-lbl">All Tasks</span></div>
+  <div class="sb-item"        data-filter="today"       onclick="navClick(this)"><span class="si-ico">◎</span><span class="si-lbl">Today</span></div>
+  <div class="sb-item"        data-filter="high"        onclick="navClick(this)"><span class="si-ico">🔴</span><span class="si-lbl">High Priority</span></div>
+  <div class="sb-item"        data-filter="done"        onclick="navClick(this)"><span class="si-ico">✓</span><span class="si-lbl">Completed</span></div>
+  <div class="sb-sep"></div>
+  <div class="sb-sec">Workspace</div>
+  <div class="sb-item" data-filter="design"      onclick="navClick(this)"><span class="si-ico">◈</span><span class="si-lbl">Design</span></div>
+  <div class="sb-item" data-filter="engineering" onclick="navClick(this)"><span class="si-ico">⊞</span><span class="si-lbl">Engineering</span></div>
+  <div class="sb-item" data-filter="ai"          onclick="navClick(this)"><span class="si-ico">✦</span><span class="si-lbl">AI Tasks</span></div>
+  <div class="sb-bot">
+    <button class="sb-theme" onclick="toggleTheme()">
+      <span class="st-ico" id="theme-ico">🌙</span>
+      <span class="st-lbl" id="theme-lbl">Dark Mode</span>
+    </button>
+    <div class="sb-user-row">
+      <div class="sb-av">MG</div>
+      <div class="sb-uinfo">
+        <div class="sb-uname">Michael Gaitho</div>
+        <div class="sb-urole">OWNER · DESIGNER</div>
+      </div>
+    </div>
+  </div>
+</nav>
 
-        <!-- Insights Page -->
-        <div id="insights" class="page">
-            <div class="card">
-                <h2>Productivity Insights</h2>
-                <div class="insights-grid">
-                    <div class="insight-card">
-                        <h3>Task Completion Rate</h3>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="completion-bar"></div>
-                        </div>
-                        <p class="progress-text" id="completion-text">You complete 0% of tasks on time</p>
-                    </div>
-                    <div class="insight-card">
-                        <h3>Weekly Focus Time</h3>
-                        <div class="chart-container" id="focus-chart">
-                            <!-- Chart will be generated here -->
-                        </div>
-                    </div>
-                </div>
-                <div class="recommendations">
-                    <h3>AI Recommendations</h3>
-                    <div id="ai-recommendations">
-                        <!-- AI recommendations will be added here -->
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="main">
+  <div class="topbar">
+    <button class="tb-ham" onclick="openMob()">☰</button>
+    <div class="tb-brand">MIK<span>Ō</span></div>
+  </div>
 
-        <!-- Add Task Page -->
-        <div id="add-task" class="page">
-            <div class="card add-task-card">
-                <h2>Add New Task</h2>
-                <div class="form-group">
-                    <label>Task Title</label>
-                    <input type="text" id="task-title" placeholder="What needs to be done?">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="task-description" rows="3" placeholder="Add details..."></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="task-due-date">Due Date</label>
-                        <input type="date" id="task-due-date" title="Task due date" aria-label="Task due date">
-                    </div>
-                    <div class="form-group">
-                        <label for="task-priority">Priority</label>
-                        <select id="task-priority" name="task-priority">
-                            <option value="low">Low</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="high">High</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="task-category">Category</label>
-                    <select id="task-category" name="category">
-                        <option value="work">Work</option>
-                        <option value="personal">Personal</option>
-                        <option value="health">Health</option>
-                        <option value="learning">Learning</option>
-                    </select>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="app.showPage('dashboard')">Cancel</button>
-                    <button type="submit" class="btn-primary" onclick="taskManager.addManualTask()">Add Task</button>
-                </div>
-            </div>
-        </div>
-    </main>
+  <div class="hero">
+    <div>
+      <div class="hero-eye" id="hero-date">LOADING…</div>
+      <div class="hero-h">YOUR<br><span>TASKS</span></div>
+      <div class="hero-sub">Stay sharp, Michael. <span id="undone-ct">0</span> tasks remaining — let's move.</div>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-dot" style="background:var(--hi)"></div><div><div class="hs-n" id="s-high">0</div><div class="hs-l">High priority</div></div></div>
+      <div class="hs"><div class="hs-dot" style="background:var(--ac)"></div><div><div class="hs-n ac" id="s-done">0</div><div class="hs-l">Completed</div></div></div>
+      <div class="hs"><div class="hs-dot" style="background:var(--bd)"></div><div><div class="hs-n" id="s-total">0</div><div class="hs-l">Total tasks</div></div></div>
+    </div>
+  </div>
 
-    <!-- Mobile Bottom Nav -->
-    <div class="mobile-bottom-nav">
-        <button type="button" class="nav-active" onclick="app.showPage('dashboard')">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </button>
-        <button type="button" onclick="app.showPage('tasks')">
-            <i class="fas fa-tasks"></i>
-            <span>Tasks</span>
-        </button>
-        <button type="button" onclick="app.showPage('insights')">
-            <i class="fas fa-chart-pie"></i>
-            <span>Insights</span>
-        </button>
-        <button type="button" onclick="app.showPage('add-task')">
-            <i class="fas fa-plus"></i>
-            <span>Add</span>
-        </button>
+  <div class="toolbar">
+    <div class="add-bar">
+      <span class="add-plus">+</span>
+      <input class="add-inp" id="task-inp" placeholder="Add task — press Enter or tap Add" onkeydown="if(event.key==='Enter')addTask()">
+    </div>
+    <button class="btn" onclick="aiSuggest()">✦ AI</button>
+    <button class="btn btn-primary" onclick="addTask()">Add</button>
+  </div>
+
+  <div class="filters">
+    <button class="chip on" data-filter="all"    onclick="chipClick(this)">All</button>
+    <button class="chip"    data-filter="high"   onclick="chipClick(this)">🔴 High</button>
+    <button class="chip"    data-filter="medium" onclick="chipClick(this)">🟡 Medium</button>
+    <button class="chip"    data-filter="low"    onclick="chipClick(this)">🟢 Low</button>
+    <button class="chip"    data-filter="ai"     onclick="chipClick(this)">✦ AI</button>
+    <button class="chip"    data-filter="done"   onclick="chipClick(this)">✓ Done</button>
+  </div>
+
+  <div class="task-area" id="task-area">
+    <div class="sec-lbl" id="lbl-progress">In Progress</div>
+
+    <div class="task" data-p="high" data-ai="true" data-tag="design" style="animation-delay:.04s">
+      <div class="tchk" onclick="toggleDone(this)"></div>
+      <div class="t-body"><div class="t-name">Redesign onboarding screen for mobile users</div><div class="t-meta"><span class="t-tag">Design</span><span class="t-ai">✦ AI</span><span class="t-due late">📅 Overdue</span></div></div>
+      <button class="t-del" onclick="delTask(this)">✕</button>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/storage.js"></script>
-    <script src="js/ai-service.js"></script>
-    <script src="js/task-manager.js"></script>
-    <script src="js/app.js"></script>
+    <div class="task" data-p="high" data-tag="engineering" style="animation-delay:.07s">
+      <div class="tchk" onclick="toggleDone(this)"></div>
+      <div class="t-body"><div class="t-name">Review API rate limiting strategy with backend team</div><div class="t-meta"><span class="t-tag">Engineering</span><span class="t-due">📅 Today, 3 PM</span></div></div>
+      <button class="t-del" onclick="delTask(this)">✕</button>
+    </div>
+
+    <div class="task" data-p="medium" data-ai="true" data-tag="design" style="animation-delay:.10s">
+      <div class="tchk" onclick="toggleDone(this)"></div>
+      <div class="t-body"><div class="t-name">Finalize design system color tokens v2.1</div><div class="t-meta"><span class="t-tag">Design</span><span class="t-ai">✦ AI</span><span class="t-due">📅 Friday</span></div></div>
+      <button class="t-del" onclick="delTask(this)">✕</button>
+    </div>
+
+    <div class="task" data-p="medium" data-tag="engineering" style="animation-delay:.13s">
+      <div class="tchk" onclick="toggleDone(this)"></div>
+      <div class="t-body"><div class="t-name">Set up regression test suite for all auth flows</div><div class="t-meta"><span class="t-tag">Engineering</span><span class="t-due">📅 Next week</span></div></div>
+      <button class="t-del" onclick="delTask(this)">✕</button>
+    </div>
+
+    <div class="task" data-p="low" data-tag="engineering" style="animation-delay:.16s">
+      <div class="tchk" onclick="toggleDone(this)"></div>
+      <div class="t-body"><div class="t-name">Update REST API documentation in Notion</div><div class="t-meta"><span class="t-tag">Docs</span><span class="t-due">📅 Apr 1</span></div></div>
+      <button class="t-del" onclick="delTask(this)">✕</button>
+    </div>
+
+    <div class="sec-lbl" id="lbl-done">Completed</div>
+
+    <div class="task done" data-p="medium" data-tag="design" style="animation-delay:.19s">
+      <div class="tchk on" onclick="toggleDone(this)"></div>
+      <div class="t-body"><div class="t-name">Write Q2 email campaign copy</div><div class="t-meta"><span class="t-tag">Marketing</span><span class="t-due">✓ Done earlier</span></div></div>
+      <button class="t-del" onclick="delTask(this)">✕</button>
+    </div>
+
+    <div class="empty-state" id="empty-state">
+      <div class="e-ico">📭</div>
+      <div>No tasks match this filter</div>
+      <div style="font-size:12px;margin-top:4px">Try a different filter or add a new task above</div>
+    </div>
+  </div>
+
+  <div class="bot-nav">
+    <div class="bn active" data-filter="all"   onclick="bottomNav(this)"><span class="bn-ico">☰</span><span class="bn-lbl">Tasks</span></div>
+    <div class="bn"        data-filter="today" onclick="bottomNav(this)"><span class="bn-ico">◎</span><span class="bn-lbl">Today</span></div>
+    <div class="bn"        data-filter="high"  onclick="bottomNav(this)"><span class="bn-ico">🔴</span><span class="bn-lbl">Priority</span></div>
+    <div class="bn"                            onclick="togglePanel()">  <span class="bn-ico">✦</span><span class="bn-lbl">AI</span></div>
+  </div>
+</div>
+
+<button class="ai-fab" id="ai-fab" onclick="togglePanel()">✦</button>
+
+<aside class="panel" id="panel">
+  <div class="panel-scroll" id="panel-scroll">
+    <div>
+      <div class="p-greet" id="p-greet">GOOD MORNING,</div>
+      <div class="p-date">Michael Gaitho · Let's make it count.</div>
+    </div>
+    <div class="arc-card">
+      <div class="arc-wrap">
+        <svg class="arc-svg" width="62" height="62" viewBox="0 0 62 62">
+          <circle class="arc-bg"   cx="31" cy="31" r="26"/>
+          <circle class="arc-fill" cx="31" cy="31" r="26" id="arc-fill"/>
+        </svg>
+        <div class="arc-pct" id="arc-pct">0%</div>
+      </div>
+      <div>
+        <div class="arc-title">Weekly Progress</div>
+        <div class="arc-sub" id="arc-sub">0 of 0 tasks done</div>
+        <div class="arc-fire">🔥 On track</div>
+      </div>
+    </div>
+    <div class="streak-card">
+      <div class="streak-head"><div class="streak-title">This Week</div><div class="streak-val">🔥 4-day streak</div></div>
+      <div class="streak-grid">
+        <div class="sd on"></div><div class="sd on"></div><div class="sd on"></div>
+        <div class="sd on"></div><div class="sd partial"></div><div class="sd"></div><div class="sd"></div>
+      </div>
+      <div class="streak-lbls">
+        <div class="sd-l">M</div><div class="sd-l">T</div><div class="sd-l">W</div>
+        <div class="sd-l">T</div><div class="sd-l">F</div><div class="sd-l">S</div><div class="sd-l">S</div>
+      </div>
+    </div>
+    <div class="ai-head">
+      <div class="ai-dot"></div>
+      <div class="ai-title">✦ MIKŌ AI</div>
+      <div class="ai-sub">Claude</div>
+    </div>
+    <div class="ai-grid">
+      <button class="ai-qbtn" onclick="qAct('prioritize')">⚡ Prioritize</button>
+      <button class="ai-qbtn" onclick="qAct('schedule')">📅 Schedule</button>
+      <button class="ai-qbtn" onclick="qAct('breakdown')">⊞ Break down</button>
+      <button class="ai-qbtn" onclick="qAct('summary')">📊 Summary</button>
+    </div>
+    <div class="ai-msgs" id="ai-msgs">
+      <div class="ai-bub">
+        <div class="ai-lbl">MIKŌ AI</div>
+        Hey Michael! 2 tasks are overdue. Your focus peak is Tue 9–11 AM — I've blocked that for deep work.
+      </div>
+      <div class="ai-hint" onclick="applyHint(this)"><span class="h-ico">💡</span><span>Move "API rate limiting" to today 3 PM — it's blocking 2 teammates.</span></div>
+      <div class="ai-hint" onclick="applyHint(this)"><span class="h-ico">🔁</span><span>Break "Onboarding redesign" into 4 subtasks? ~3h total.</span></div>
+      <div class="ai-hint" onclick="applyHint(this)"><span class="h-ico">⚠️</span><span>Deadline conflict Friday — 2 tasks clash. Reschedule one?</span></div>
+    </div>
+  </div>
+  <div class="panel-foot">
+    <textarea class="p-inp" id="ai-inp" placeholder="Ask MIKŌ AI anything…" rows="1"
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI()}"></textarea>
+    <button class="p-send" onclick="sendAI()">↑</button>
+  </div>
+</aside>
+
+</div>
+
+<script>
+var curFilter='all',deskOpen=false,panelOpen=false,mobOpen=false;
+(function(){
+  var D=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  var Mo=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var n=new Date();
+  document.getElementById('hero-date').textContent=D[n.getDay()]+' · '+Mo[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+  var h=n.getHours();
+  document.getElementById('p-greet').textContent=h<12?'GOOD MORNING,':h<17?'GOOD AFTERNOON,':'GOOD EVENING,';
+  document.getElementById('sb').querySelector('.sb-toggle-ico').textContent='›';
+  document.getElementById('task-area').addEventListener('scroll',function(){
+    document.getElementById('goto-top').classList.toggle('show',this.scrollTop>160);
+  });
+  document.getElementById('goto-top').addEventListener('click',function(){
+    document.getElementById('task-area').scrollTo({top:0,behavior:'smooth'});
+  });
+  updateStats();
+})();
+var scrimCb=null;
+function showScrim(cb){
+  scrimCb=cb||null;
+  var s=document.getElementById('scrim');
+  s.style.display='block';
+  requestAnimationFrame(function(){s.classList.add('on');});
+  s.onclick=function(){hideScrim();};
+}
+function hideScrim(){
+  var s=document.getElementById('scrim');
+  s.classList.remove('on');
+  s.onclick=null;
+  setTimeout(function(){s.style.display='none';},280);
+  if(scrimCb){var f=scrimCb;scrimCb=null;f();}
+}
+function toggleDesk(){
+  deskOpen=!deskOpen;
+  document.getElementById('sb').classList.toggle('desk-open',deskOpen);
+  document.getElementById('sb-lbl').textContent=deskOpen?'Collapse':'Expand';
+  document.querySelector('.sb-toggle-ico').textContent=deskOpen?'‹':'›';
+}
+function openMob(){
+  if(mobOpen)return;
+  mobOpen=true;
+  document.getElementById('sb').classList.add('mob-open');
+  showScrim(function(){mobOpen=false;document.getElementById('sb').classList.remove('mob-open');});
+}
+function closeMob(){
+  if(!mobOpen)return;
+  mobOpen=false;
+  document.getElementById('sb').classList.remove('mob-open');
+  hideScrim();
+}
+function togglePanel(){if(panelOpen)closePanel();else openPanel();}
+function openPanel(){
+  if(panelOpen)return;
+  panelOpen=true;
+  document.getElementById('panel').classList.add('panel-open');
+  document.getElementById('ai-fab').textContent='✕';
+  showScrim(function(){panelOpen=false;document.getElementById('panel').classList.remove('panel-open');document.getElementById('ai-fab').textContent='✦';});
+}
+function closePanel(){
+  if(!panelOpen)return;
+  panelOpen=false;
+  document.getElementById('panel').classList.remove('panel-open');
+  document.getElementById('ai-fab').textContent='✦';
+  hideScrim();
+}
+function toggleTheme(){
+  var html=document.documentElement;
+  var dark=html.dataset.theme==='light';
+  html.dataset.theme=dark?'dark':'light';
+  var ico=dark?'☀️':'🌙';
+  var lbl=dark?'Light Mode':'Dark Mode';
+  document.getElementById('theme-ico').textContent=ico;
+  document.getElementById('theme-lbl').textContent=lbl;
+}
+function navClick(el){
+  document.querySelectorAll('.sb-item').forEach(function(n){n.classList.remove('active');});
+  el.classList.add('active');
+  var f=el.dataset.filter||'all';
+  syncChips(f);
+  applyFilter(f);
+  if(mobOpen)closeMob();
+}
+function bottomNav(el){
+  document.querySelectorAll('.bn').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+  var f=el.dataset.filter||'all';
+  syncChips(f);
+  document.querySelectorAll('.sb-item').forEach(function(n){n.classList.toggle('active',n.dataset.filter===f);});
+  applyFilter(f);
+}
+function chipClick(el){
+  var f=el.dataset.filter||'all';
+  syncChips(f);
+  document.querySelectorAll('.sb-item').forEach(function(n){n.classList.toggle('active',n.dataset.filter==='all');});
+  applyFilter(f);
+}
+function syncChips(f){
+  curFilter=f;
+  var cf=(f==='design'||f==='engineering'||f==='today')?'all':f;
+  document.querySelectorAll('.chip').forEach(function(c){c.classList.toggle('on',c.dataset.filter===cf);});
+}
+function applyFilter(f){
+  curFilter=f;
+  var any=false;
+  document.querySelectorAll('.task').forEach(function(t){
+    var p=t.dataset.p||'',ai=t.dataset.ai==='true',tag=t.dataset.tag||'',done=t.classList.contains('done');
+    var show=true;
+    if(f==='high')show=p==='high';
+    else if(f==='medium')show=p==='medium';
+    else if(f==='low')show=p==='low';
+    else if(f==='ai')show=ai;
+    else if(f==='done')show=done;
+    else if(f==='design')show=tag==='design';
+    else if(f==='engineering')show=tag==='engineering';
+    else if(f==='today'){var d=t.querySelector('.t-due');show=!!(d&&(d.textContent.indexOf('Today')>-1||d.textContent.indexOf('Overdue')>-1));}
+    t.style.display=show?'':'none';
+    if(show)any=true;
+  });
+  function hasVisible(lbl){
+    if(!lbl)return false;
+    var el=lbl.nextElementSibling;
+    while(el&&!el.classList.contains('sec-lbl')&&!el.classList.contains('empty-state')){
+      if(el.classList.contains('task')&&el.style.display!=='none')return true;
+      el=el.nextElementSibling;
+    }
+    return false;
+  }
+  var lp=document.getElementById('lbl-progress'),ld=document.getElementById('lbl-done');
+  if(lp)lp.style.display=hasVisible(lp)?'':'none';
+  if(ld)ld.style.display=hasVisible(ld)?'':'none';
+  var es=document.getElementById('empty-state');
+  if(es)es.classList.toggle('show',!any);
+  updateStats();
+}
+function toggleDone(chk){
+  var t=chk.closest('.task');
+  var nd=!chk.classList.contains('on');
+  chk.classList.toggle('on',nd);
+  t.classList.toggle('done',nd);
+  updateStats();
+}
+function delTask(btn){
+  var t=btn.closest('.task');
+  t.style.transition='opacity .22s,transform .22s';
+  t.style.opacity='0';t.style.transform='translateX(16px)';
+  setTimeout(function(){t.remove();applyFilter(curFilter);},230);
+}
+function addTask(){
+  var inp=document.getElementById('task-inp');
+  var val=inp.value.trim();if(!val)return;
+  var t=document.createElement('div');
+  t.className='task';t.dataset.p='low';t.dataset.tag='design';
+  t.innerHTML='<div class="tchk" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name">'+esc(val)+'</div><div class="t-meta"><span class="t-tag">Personal</span><span class="t-due">📅 No date</span></div></div><button class="t-del" onclick="delTask(this)">✕</button>';
+  var area=document.getElementById('task-area');
+  var ld=document.getElementById('lbl-done');
+  if(ld)area.insertBefore(t,ld);else area.insertBefore(t,document.getElementById('empty-state'));
+  inp.value='';
+  applyFilter(curFilter);
+  setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
+  addAIMsg('Added "'+esc(val)+'" — want me to set a due date or priority?');
+}
+function updateStats(){
+  var all=[].slice.call(document.querySelectorAll('.task'));
+  var done=all.filter(function(t){return t.classList.contains('done');});
+  var high=all.filter(function(t){return t.dataset.p==='high'&&!t.classList.contains('done');});
+  document.getElementById('s-total').textContent=all.length;
+  document.getElementById('s-done').textContent=done.length;
+  document.getElementById('s-high').textContent=high.length;
+  document.getElementById('undone-ct').textContent=all.length-done.length;
+  var pct=all.length?Math.round(done.length/all.length*100):0;
+  document.getElementById('arc-pct').textContent=pct+'%';
+  document.getElementById('arc-sub').textContent=done.length+' of '+all.length+' tasks done';
+  document.getElementById('arc-fill').style.strokeDashoffset=163-(pct/100)*163;
+}
+function qAct(k){
+  var n=document.querySelectorAll('.task').length;
+  var m={prioritize:'Reprioritized by deadline & impact. "API Review" is your #1, Michael.',schedule:'Peak window: Tue 9–11 AM. "Onboarding redesign" scheduled then.',breakdown:'"Onboarding" → ① Audit ② UX patterns ③ Wireframes ④ Prototype. ~3h total.',summary:'You have '+n+' tasks total. 2 high-priority. Weekly rate: 68%. Keep it up!'};
+  addAIMsg(m[k]||'Processing…');
+}
+function applyHint(el){el.classList.add('used');addAIMsg('Applied! Your schedule has been updated, Michael.');}
+function aiSuggest(){
+  showTyping();
+  setTimeout(function(){
+    removeTyping();
+    var ideas=['Audit all tasks for deadline conflicts','Prepare sprint review brief for end of week','Review team workload and rebalance assignments','Write UX audit report for onboarding flow'];
+    var p=ideas[Math.floor(Math.random()*ideas.length)];
+    document.getElementById('task-inp').value=p;
+    addAIMsg('Suggested: "'+p+'" — press Add when ready.');
+  },900);
+}
+function sendAI(){
+  var inp=document.getElementById('ai-inp'),val=inp.value.trim();if(!val)return;
+  addUserBub(val);inp.value='';inp.style.height='auto';
+  showTyping();
+  var r=["Got it, Michael! I've updated the schedule.","Done. I flagged 2 related tasks to bundle.","Based on your workload, tackle high-priority items first tomorrow.","You're at great pace! Two more tasks today keeps you on track.","Want me to reorganise by project, deadline, or priority?"];
+  setTimeout(function(){removeTyping();addAIMsg(r[Math.floor(Math.random()*r.length)]);},1200);
+}
+function addAIMsg(text){
+  var m=document.getElementById('ai-msgs');
+  var el=document.createElement('div');el.className='ai-bub';
+  el.innerHTML='<div class="ai-lbl">MIKŌ AI</div>'+esc(text);
+  m.appendChild(el);m.scrollTop=m.scrollHeight;
+  var ps=document.getElementById('panel-scroll');
+  if(ps)setTimeout(function(){ps.scrollTop=ps.scrollHeight;},60);
+}
+function addUserBub(text){var m=document.getElementById('ai-msgs'),el=document.createElement('div');el.className='user-bub';el.textContent=text;m.appendChild(el);m.scrollTop=m.scrollHeight;}
+function showTyping(){var m=document.getElementById('ai-msgs'),el=document.createElement('div');el.id='typ';el.className='typing-bub';el.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';m.appendChild(el);m.scrollTop=m.scrollHeight;}
+function removeTyping(){var e=document.getElementById('typ');if(e)e.remove();}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+</script>
 </body>
 </html>
