@@ -232,23 +232,46 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   .sb-toggle{display:none}
   .sb-close{display:flex;position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:var(--surf2);border:1px solid var(--bd);align-items:center;justify-content:center;font-size:18px;color:var(--tx2);cursor:pointer;z-index:10}
   .sb-close:hover{background:var(--surf3);color:var(--tx)}
-  .hero{grid-template-columns:1fr;padding:16px 14px 0;gap:14px}
-  .hero-stats{flex-direction:row;flex-wrap:wrap;align-items:stretch;gap:7px}
-  .hs{flex:1;min-width:90px}
-  .hero-h{font-size:clamp(38px,11vw,56px)}
+  
+  /* Collapsible hero section */
+  .hero{grid-template-columns:1fr;padding:12px 14px 0;gap:10px;transition:all .3s var(--ease)}
+  .hero.collapsed{padding:8px 14px 0}
+  .hero.collapsed .hero-h{font-size:clamp(24px,8vw,32px)}
+  .hero.collapsed .hero-stats{transform:scale(0.85);transform-origin:right center}
+  .hero.collapsed .hero-sub{display:none}
+  .hero-h{font-size:clamp(32px,10vw,48px);transition:font-size .3s var(--ease)}
+  .hero-stats{flex-direction:row;flex-wrap:wrap;align-items:stretch;gap:6px;transition:transform .3s var(--ease)}
+  .hs{flex:1;min-width:80px;padding:5px 10px 5px 8px}
+  .hs-dot{width:6px;height:6px}
+  .hs-n{font-size:18px}
+  .hs-l{font-size:12px}
   .hero-sub{display:none}
-  .toolbar{flex-direction:column;align-items:stretch;padding:12px 14px 0;gap:10px}
-  .add-wrapper{width:100%}
-  .add-bar{width:100%}
-  .add-inp{flex:1;min-width:0}
+  
+  /* Compact toolbar with buttons next to input */
+  .toolbar{flex-direction:column;align-items:stretch;padding:10px 14px 0;gap:8px}
+  .toolbar .add-wrapper{flex:1}
+  .add-bar{display:flex;align-items:center;gap:8px;background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--r);padding:8px 12px;transition:border-color .2s}
+  .add-bar:focus-within{border-color:var(--ac)}
+  .add-plus{font-size:18px;color:var(--tx3)}
+  .add-inp{flex:1;font-size:15px;min-width:0;border:none;background:transparent;padding:0}
+  
+  /* New mobile toolbar row with input + buttons */
+  .toolbar-row{display:flex;align-items:center;gap:8px;width:100%}
+  .toolbar-row .add-wrapper{flex:1;min-width:0}
+  .toolbar-row .add-bar{width:100%}
+  .toolbar-row>.btn{height:44px;padding:0 14px;font-size:14px;white-space:nowrap;border-radius:var(--rs)}
+  .toolbar-row>.btn-primary{height:44px;padding:0 18px}
+  
+  /* Original buttons hidden on mobile (moved to row) */
+  .toolbar>.btn:not(.toolbar-row .btn){display:none}
+  
   .picker-row{gap:10px}
   .cat-chips{flex-wrap:wrap}
-  .cat-chip{font-size:14px;padding:6px 12px}
-  .pri-btn{font-size:14px;padding:7px 12px}
-  .add-date{width:100%;max-width:160px}
-  .toolbar>.btn{width:100%;justify-content:center}
-  .filters{padding:10px 14px 0}
-  .task-area{padding:10px 14px 90px}
+  .cat-chip{font-size:13px;padding:5px 10px}
+  .pri-btn{font-size:13px;padding:6px 10px}
+  .add-date{width:100%;max-width:140px}
+  .filters{padding:8px 14px 0}
+  .task-area{padding:8px 14px 90px}
   .t-del{opacity:1}
   .t-name{white-space:normal}
   #goto-top{bottom:72px;right:14px;width:38px;height:38px;font-size:14px}
@@ -322,48 +345,50 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   </div>
 
   <div class="toolbar">
-    <div class="add-wrapper">
-      <div class="add-bar">
-        <span class="add-plus">+</span>
-        <input type="text" class="add-inp" id="task-inp" placeholder="Add a new task..." onkeydown="if(event.key==='Enter')addTask()" oninput="togglePickers(this.value)">
-      </div>
-      <div class="add-pickers" id="add-pickers">
-        <div class="picker-row">
-          <div class="picker-group">
-            <label class="picker-lbl">Category</label>
-            <div class="cat-chips">
-              <button type="button" class="cat-chip on" data-cat="personal" onclick="setCat(this)">Personal</button>
-              <button type="button" class="cat-chip" data-cat="work" onclick="setCat(this)">Work</button>
-              <button type="button" class="cat-chip" data-cat="school" onclick="setCat(this)">School</button>
-              <button type="button" class="cat-chip" data-cat="health" onclick="setCat(this)">Health</button>
-              <button type="button" class="cat-chip" data-cat="finance" onclick="setCat(this)">Finance</button>
+    <div class="toolbar-row">
+      <div class="add-wrapper">
+        <div class="add-bar">
+          <span class="add-plus">+</span>
+          <input type="text" class="add-inp" id="task-inp" placeholder="Add a new task..." onkeydown="if(event.key==='Enter')addTask()" oninput="togglePickers(this.value)">
+        </div>
+        <div class="add-pickers" id="add-pickers">
+          <div class="picker-row">
+            <div class="picker-group">
+              <label class="picker-lbl">Category</label>
+              <div class="cat-chips">
+                <button type="button" class="cat-chip on" data-cat="personal" onclick="setCat(this)">Personal</button>
+                <button type="button" class="cat-chip" data-cat="work" onclick="setCat(this)">Work</button>
+                <button type="button" class="cat-chip" data-cat="school" onclick="setCat(this)">School</button>
+                <button type="button" class="cat-chip" data-cat="health" onclick="setCat(this)">Health</button>
+                <button type="button" class="cat-chip" data-cat="finance" onclick="setCat(this)">Finance</button>
+              </div>
+            </div>
+          </div>
+          <div class="picker-row">
+            <div class="picker-group">
+              <label class="picker-lbl">Priority</label>
+              <div class="add-pri">
+                <button type="button" class="pri-btn on" data-p="low" onclick="setPri(this)">
+                  <span class="pri-dot pri-low"></span> Low
+                </button>
+                <button type="button" class="pri-btn" data-p="medium" onclick="setPri(this)">
+                  <span class="pri-dot pri-med"></span> Medium
+                </button>
+                <button type="button" class="pri-btn" data-p="high" onclick="setPri(this)">
+                  <span class="pri-dot pri-high"></span> High
+                </button>
+              </div>
+            </div>
+            <div class="picker-group">
+              <label class="picker-lbl">Due Date</label>
+              <input type="date" class="add-date" id="task-date" onchange="markPickerUsed()">
             </div>
           </div>
         </div>
-        <div class="picker-row">
-          <div class="picker-group">
-            <label class="picker-lbl">Priority</label>
-            <div class="add-pri">
-              <button type="button" class="pri-btn on" data-p="low" onclick="setPri(this)">
-                <span class="pri-dot pri-low"></span> Low
-              </button>
-              <button type="button" class="pri-btn" data-p="medium" onclick="setPri(this)">
-                <span class="pri-dot pri-med"></span> Medium
-              </button>
-              <button type="button" class="pri-btn" data-p="high" onclick="setPri(this)">
-                <span class="pri-dot pri-high"></span> High
-              </button>
-            </div>
-          </div>
-          <div class="picker-group">
-            <label class="picker-lbl">Due Date</label>
-            <input type="date" class="add-date" id="task-date" onchange="markPickerUsed()">
-          </div>
-        </div>
       </div>
+      <button type="button" class="btn" onclick="aiSuggest()">◆ Suggest</button>
+      <button type="button" class="btn btn-primary" id="add-btn" onclick="addTask()" disabled>Add</button>
     </div>
-    <button type="button" class="btn" onclick="aiSuggest()">◆ Suggest</button>
-    <button type="button" class="btn btn-primary" id="add-btn" onclick="addTask()" disabled>Add</button>
   </div>
 
   <div class="filters">
@@ -476,12 +501,20 @@ var curFilter='all',deskOpen=false,panelOpen=false,mobOpen=false;
     taskArea.addEventListener('scroll',function(){
       var gotoTop=document.getElementById('goto-top');
       if(gotoTop)gotoTop.classList.toggle('show',this.scrollTop>160);
+      // Collapse hero on mobile when scrolling
+      var hero=document.querySelector('.hero');
+      if(hero && window.innerWidth<=600){
+        hero.classList.toggle('collapsed',this.scrollTop>30);
+      }
     });
   }
   var gotoTopBtn=document.getElementById('goto-top');
   if(gotoTopBtn){
     gotoTopBtn.addEventListener('click',function(){
       if(taskArea)taskArea.scrollTo({top:0,behavior:'smooth'});
+      // Reset hero on mobile
+      var hero=document.querySelector('.hero');
+      if(hero)hero.classList.remove('collapsed');
     });
   }
   updateStats();
