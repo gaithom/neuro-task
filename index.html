@@ -276,6 +276,45 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   .hero-stats{display:none}
   .hero{grid-template-columns:1fr}
 }
+
+/* Canvas/Sketch Styles */
+.canvas-modal{position:fixed;inset:0;z-index:800;background:var(--scrim);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .3s var(--ease)}
+.canvas-modal.on{opacity:1;display:flex}
+.canvas-wrap{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rl);width:min(90vw,900px);height:min(85vh,700px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:scale(.95);transition:transform .3s var(--ease)}
+.canvas-modal.on .canvas-wrap{transform:scale(1)}
+.canvas-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bd);background:var(--surf)}
+.canvas-title{font-family:'Locanita',sans-serif;font-size:18px;color:var(--tx);letter-spacing:.3px}
+.canvas-close{width:32px;height:32px;border-radius:var(--rs);background:var(--surf2);border:1px solid var(--bd);color:var(--tx2);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.canvas-close:hover{background:var(--hi);border-color:var(--hi);color:#fff}
+.canvas-body{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.canvas-tools{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--bd);background:var(--surf2);flex-wrap:wrap}
+.tool-btn{width:36px;height:36px;border-radius:var(--rs);border:1.5px solid var(--bd);background:var(--surf);color:var(--tx2);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.tool-btn:hover{border-color:var(--ac);color:var(--ac)}
+.tool-btn.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.tool-sep{width:1px;height:24px;background:var(--bd);margin:0 4px}
+.color-btn{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .15s;position:relative}
+.color-btn:hover{transform:scale(1.1)}
+.color-btn.on{box-shadow:0 0 0 2px var(--surf),0 0 0 4px var(--ac)}
+.bg-black{background:#000}
+.bg-orange{background:#c2570a}
+.bg-red{background:#dc2626}
+.bg-green{background:#16a34a}
+.bg-blue{background:#2563eb}
+.bg-yellow{background:#f59e0b}
+.canvas-area{flex:1;position:relative;background:#fff;cursor:crosshair}
+#sketch-canvas{display:block;touch-action:none}
+.canvas-foot{display:flex;align-items:center;gap:10px;padding:12px 18px;border-top:1px solid var(--bd);background:var(--surf)}
+.size-slider{width:80px;height:4px;background:var(--bd);border-radius:2px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
+.size-slider::-webkit-slider-thumb{width:14px;height:14px;background:var(--ac);border-radius:50%;cursor:pointer;-webkit-appearance:none;box-shadow:0 0 0 2px var(--surf)}
+.size-val{font-size:12px;color:var(--tx2);min-width:20px}
+.size-lbl{font-size:12px;color:var(--tx2)}
+.flex-spacer{flex:1}
+@media(max-width:600px){
+  .canvas-wrap{width:95vw;height:80vh}
+  .canvas-tools{padding:8px 10px;gap:6px}
+  .tool-btn{width:32px;height:32px;font-size:12px}
+  .color-btn{width:24px;height:24px}
+}
 </style>
 </head>
 <body>
@@ -516,6 +555,43 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   </div>
 </aside>
 
+</div>
+
+<!-- Canvas/Sketch Modal -->
+<div class="canvas-modal" id="canvas-modal">
+  <div class="canvas-wrap">
+    <div class="canvas-head">
+      <div class="canvas-title">◈ Design Canvas — Sketch &amp; Draw</div>
+      <button type="button" class="canvas-close" onclick="closeCanvas()">✕</button>
+    </div>
+    <div class="canvas-body">
+      <div class="canvas-tools">
+        <button type="button" class="tool-btn on" id="tool-pen" onclick="setTool('pen')" title="Pen">✏️</button>
+        <button type="button" class="tool-btn" id="tool-eraser" onclick="setTool('eraser')" title="Eraser">🧼</button>
+        <div class="tool-sep"></div>
+        <button type="button" class="bg-black color-btn on" onclick="setColor('#000')" title="Black" aria-label="Black"></button>
+        <button type="button" class="bg-orange color-btn" onclick="setColor('#c2570a')" title="Orange" aria-label="Orange"></button>
+        <button type="button" class="bg-red color-btn" onclick="setColor('#dc2626')" title="Red" aria-label="Red"></button>
+        <button type="button" class="bg-green color-btn" onclick="setColor('#16a34a')" title="Green" aria-label="Green"></button>
+        <button type="button" class="bg-blue color-btn" onclick="setColor('#2563eb')" title="Blue" aria-label="Blue"></button>
+        <button type="button" class="bg-yellow color-btn" onclick="setColor('#f59e0b')" title="Yellow" aria-label="Yellow"></button>
+        <div class="tool-sep"></div>
+        <button type="button" class="tool-btn" onclick="clearCanvas()" title="Clear" aria-label="Clear"></button>
+        <button type="button" class="tool-btn" onclick="undoCanvas()" title="Undo">↩️</button>
+        </div>
+        <div class="canvas-area">
+        <canvas id="sketch-canvas"></canvas>
+      </div>
+    </div>
+    <div class="canvas-foot">
+      <label class="size-lbl">Size:</label>
+      <input type="range" class="size-slider" id="brush-size" min="1" max="20" value="3" oninput="setBrushSize(this.value)">
+      <span class="size-val" id="size-val">3</span>
+      <span class="flex-spacer"></span>
+      <button type="button" class="btn" onclick="downloadCanvas()">⬇️ Download</button>
+      <button type="button" class="btn btn-primary" onclick="saveCanvas()">💾 Save Sketch</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1043,6 +1119,175 @@ function saveEdit(inp){
 
 // Load tasks on init
 loadTasks();
+
+// Canvas/Sketch functionality
+var canvas,ctx,isDrawing=false,currentTool='pen',currentColor='#000',currentSize=3;
+var canvasHistory=[],historyIndex=-1;
+
+function initCanvas(){
+  canvas=document.getElementById('sketch-canvas');
+  if(!canvas)return;
+  var area=canvas.parentElement;
+  canvas.width=area.clientWidth;
+  canvas.height=area.clientHeight;
+  ctx=canvas.getContext('2d');
+  ctx.lineCap='round';
+  ctx.lineJoin='round';
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  saveCanvasState();
+}
+
+function openCanvas(){
+  var modal=document.getElementById('canvas-modal');
+  modal.style.display='flex';
+  requestAnimationFrame(function(){modal.classList.add('on');});
+  setTimeout(initCanvas,50);
+}
+
+function closeCanvas(){
+  var modal=document.getElementById('canvas-modal');
+  modal.classList.remove('on');
+  setTimeout(function(){modal.style.display='none';},300);
+}
+
+function setTool(tool){
+  currentTool=tool;
+  document.querySelectorAll('.tool-btn').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('tool-'+tool).classList.add('on');
+}
+
+function setColor(color){
+  currentColor=color;
+  document.querySelectorAll('.color-btn').forEach(function(b){b.classList.remove('on');});
+  event.target.classList.add('on');
+}
+
+function setBrushSize(size){
+  currentSize=parseInt(size);
+  document.getElementById('size-val').textContent=size;
+}
+
+function getPos(e){
+  var rect=canvas.getBoundingClientRect();
+  var clientX=e.clientX||(e.touches&&e.touches[0]?e.touches[0].clientX:0);
+  var clientY=e.clientY||(e.touches&&e.touches[0]?e.touches[0].clientY:0);
+  return{x:clientX-rect.left,y:clientY-rect.top};
+}
+
+function startDrawing(e){
+  e.preventDefault();
+  isDrawing=true;
+  var pos=getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(pos.x,pos.y);
+}
+
+function draw(e){
+  if(!isDrawing)return;
+  e.preventDefault();
+  var pos=getPos(e);
+  ctx.lineWidth=currentSize;
+  if(currentTool==='eraser'){
+    ctx.globalCompositeOperation='destination-out';
+    ctx.strokeStyle='rgba(0,0,0,1)';
+  }else{
+    ctx.globalCompositeOperation='source-over';
+    ctx.strokeStyle=currentColor;
+  }
+  ctx.lineTo(pos.x,pos.y);
+  ctx.stroke();
+}
+
+function stopDrawing(){
+  if(isDrawing){
+    isDrawing=false;
+    saveCanvasState();
+  }
+}
+
+function saveCanvasState(){
+  if(!canvas)return;
+  historyIndex++;
+  if(historyIndex<canvasHistory.length){
+    canvasHistory.length=historyIndex;
+  }
+  canvasHistory.push(canvas.toDataURL());
+  if(canvasHistory.length>20){
+    canvasHistory.shift();
+    historyIndex--;
+  }
+}
+
+function undoCanvas(){
+  if(historyIndex>0){
+    historyIndex--;
+    var img=new Image();
+    img.src=canvasHistory[historyIndex];
+    img.onload=function(){
+      ctx.globalCompositeOperation='source-over';
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0);
+    };
+  }
+}
+
+function clearCanvas(){
+  ctx.globalCompositeOperation='source-over';
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  saveCanvasState();
+}
+
+function downloadCanvas(){
+  var link=document.createElement('a');
+  link.download='sketch-'+Date.now()+'.png';
+  link.href=canvas.toDataURL();
+  link.click();
+}
+
+function saveCanvas(){
+  var sketches=JSON.parse(localStorage.getItem('miko_sketches')||'[]');
+  sketches.push({
+    id:Date.now().toString(36),
+    data:canvas.toDataURL(),
+    date:new Date().toISOString(),
+    title:'Sketch '+new Date().toLocaleString()
+  });
+  localStorage.setItem('miko_sketches',JSON.stringify(sketches));
+  addAIMsg('Sketch saved to your collection! 🎨');
+}
+
+// Canvas event listeners
+document.addEventListener('DOMContentLoaded',function(){
+  var c=document.getElementById('sketch-canvas');
+  if(c){
+    c.addEventListener('mousedown',startDrawing);
+    c.addEventListener('mousemove',draw);
+    c.addEventListener('mouseup',stopDrawing);
+    c.addEventListener('mouseout',stopDrawing);
+    c.addEventListener('touchstart',startDrawing,{passive:false});
+    c.addEventListener('touchmove',draw,{passive:false});
+    c.addEventListener('touchend',stopDrawing);
+  }
+  window.addEventListener('resize',function(){
+    var modal=document.getElementById('canvas-modal');
+    if(modal&&modal.classList.contains('on')){
+      setTimeout(initCanvas,100);
+    }
+  });
+});
+
+// Override Design nav click to open canvas
+var origNavClick=navClick;
+navClick=function(el){
+  if(el.dataset.filter==='design'){
+    openCanvas();
+    if(mobOpen)closeMob();
+    return;
+  }
+  origNavClick(el);
+};
 </script>
 </body>
 </html>
