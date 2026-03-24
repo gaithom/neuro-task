@@ -13,7 +13,7 @@
 @font-face{font-family:'Transformers Movie';src:url('css/Transformers Movie.ttf') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
 :root{--ease:cubic-bezier(.4,0,.2,1);--sb:64px;--sb-open:230px;--pw:296px;--tbh:52px;--r:12px;--rs:8px;--rl:16px}
 [data-theme="light"]{--bg:#f1ede7;--surf:#faf8f5;--surf2:#ffffff;--surf3:#fff6f0;--bd:#e5dfd8;--bds:#ede8e2;--tx:#18110a;--tx2:#6b5c4d;--tx3:#a89a8c;--ac:#c2570a;--ac2:#a34808;--acd:rgba(194,87,10,.10);--acg:rgba(194,87,10,.18);--hi:#dc2626;--med:#b45309;--lo:#16a34a;--scrim:rgba(0,0,0,.30);--font-body:'Outfit',sans-serif}
-[data-theme="dark"]{--bg:#0c0d0f;--surf:#131416;--surf2:#1a1c1f;--surf3:#1f2124;--bd:#252830;--bds:#1c1e24;--tx:#edeef0;--tx2:#9ca3af;--tx3:#6b7280;--ac:#22c55e;--ac2:#16a34a;--acd:rgba(34,197,94,.12);--acg:rgba(34,197,94,.20);--hi:#ef4444;--med:#f59e0b;--lo:#22c55e;--scrim:rgba(0,0,0,.60);--font-body:'Inter',sans-serif}
+[data-theme="dark"]{--bg:#0c0d0f;--surf:#131416;--surf2:#1a1c1f;--surf3:#1f2124;--bd:#252830;--bds:#1c1e24;--tx:#edeef0;--tx2:#9ca3af;--tx3:#6b7280;--ac:#c2570a;--ac2:#a34808;--acd:rgba(194,87,10,.12);--acg:rgba(194,87,10,.20);--hi:#ef4444;--med:#f59e0b;--lo:#22c55e;--scrim:rgba(0,0,0,.60);--font-body:'Inter',sans-serif}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;-webkit-text-size-adjust:100%}
 body{font-family:var(--font-body);background:var(--bg);color:var(--tx);height:100%;overflow:hidden;transition:background .35s var(--ease),color .35s var(--ease)}
@@ -86,7 +86,8 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 .hs-n{font-family:'Locanita',sans-serif;font-size:18px;line-height:1;color:var(--tx)}
 .hs-n.ac{color:var(--ac)}
 .hs-l{font-size:13px;color:var(--tx2)}
-.toolbar{display:flex;align-items:flex-start;gap:8px;padding:18px 28px 0;border-top:1px solid var(--bds);margin-top:18px;flex-shrink:0}
+.toolbar{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px;padding:18px 28px 0;border-top:1px solid var(--bds);margin-top:18px;flex-shrink:0}
+.toolbar-row{display:none}
 .add-wrapper{flex:1;min-width:0;display:flex;flex-direction:column}
 .add-bar{display:flex;align-items:center;gap:8px;background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--r);padding:9px 14px;transition:border-color .2s;min-width:0}
 .add-bar:focus-within{border-color:var(--ac)}
@@ -234,7 +235,7 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   .sb-close:hover{background:var(--surf3);color:var(--tx)}
   
   /* Collapsible hero section */
-  .hero{grid-template-columns:1fr;padding:12px 14px 0;gap:10px;transition:all .3s var(--ease)}
+  .hero{grid-template-columns:1fr;padding:12px 14px 0;gap:10px;transition:all .3s var(--ease);background:var(--bg);z-index:5;position:relative}
   .hero.collapsed{padding:8px 14px 0}
   .hero.collapsed .hero-h{font-size:clamp(24px,8vw,32px)}
   .hero.collapsed .hero-stats{transform:scale(0.85);transform-origin:right center}
@@ -248,29 +249,21 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   .hero-sub{display:none}
   
   /* Compact toolbar with buttons next to input */
-  .toolbar{flex-direction:column;align-items:stretch;padding:10px 14px 0;gap:8px}
-  .toolbar .add-wrapper{flex:1}
-  .add-bar{display:flex;align-items:center;gap:8px;background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--r);padding:8px 12px;transition:border-color .2s}
-  .add-bar:focus-within{border-color:var(--ac)}
-  .add-plus{font-size:18px;color:var(--tx3)}
-  .add-inp{flex:1;font-size:15px;min-width:0;border:none;background:transparent;padding:0}
-  
-  /* New mobile toolbar row with input + buttons */
+  .toolbar{flex-direction:column;align-items:stretch;padding:10px 14px 0;gap:8px;background:var(--bg);z-index:5;position:relative}
+  .toolbar>.add-wrapper{display:none}
+  .toolbar>.btn{display:none}
   .toolbar-row{display:flex;align-items:center;gap:8px;width:100%}
-  .toolbar-row .add-wrapper{flex:1;min-width:0}
+  .toolbar-row .add-wrapper{flex:1;min-width:0;display:flex;flex-direction:column}
   .toolbar-row .add-bar{width:100%}
-  .toolbar-row>.btn{height:44px;padding:0 14px;font-size:14px;white-space:nowrap;border-radius:var(--rs)}
+  .toolbar-row>.btn{height:44px;padding:0 14px;font-size:14px;white-space:nowrap;border-radius:var(--rs);display:flex}
   .toolbar-row>.btn-primary{height:44px;padding:0 18px}
-  
-  /* Original buttons hidden on mobile (moved to row) */
-  .toolbar>.btn:not(.toolbar-row .btn){display:none}
   
   .picker-row{gap:10px}
   .cat-chips{flex-wrap:wrap}
   .cat-chip{font-size:13px;padding:5px 10px}
   .pri-btn{font-size:13px;padding:6px 10px}
   .add-date{width:100%;max-width:140px}
-  .filters{padding:8px 14px 0}
+  .filters{padding:8px 14px 0;background:var(--bg);z-index:5;position:relative}
   .task-area{padding:8px 14px 90px}
   .t-del{opacity:1}
   .t-name{white-space:normal}
@@ -345,13 +338,57 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   </div>
 
   <div class="toolbar">
+    <div class="add-wrapper">
+      <div class="add-bar">
+        <span class="add-plus">+</span>
+        <input type="text" class="add-inp" id="task-inp" placeholder="Add a new task..." onkeydown="if(event.key==='Enter')addTask()" oninput="togglePickers(this.value)">
+      </div>
+      <div class="add-pickers" id="add-pickers">
+        <div class="picker-row">
+          <div class="picker-group">
+            <label class="picker-lbl">Category</label>
+            <div class="cat-chips">
+              <button type="button" class="cat-chip on" data-cat="personal" onclick="setCat(this)">Personal</button>
+              <button type="button" class="cat-chip" data-cat="work" onclick="setCat(this)">Work</button>
+              <button type="button" class="cat-chip" data-cat="school" onclick="setCat(this)">School</button>
+              <button type="button" class="cat-chip" data-cat="health" onclick="setCat(this)">Health</button>
+              <button type="button" class="cat-chip" data-cat="finance" onclick="setCat(this)">Finance</button>
+            </div>
+          </div>
+        </div>
+        <div class="picker-row">
+          <div class="picker-group">
+            <label class="picker-lbl">Priority</label>
+            <div class="add-pri">
+              <button type="button" class="pri-btn on" data-p="low" onclick="setPri(this)">
+                <span class="pri-dot pri-low"></span> Low
+              </button>
+              <button type="button" class="pri-btn" data-p="medium" onclick="setPri(this)">
+                <span class="pri-dot pri-med"></span> Medium
+              </button>
+              <button type="button" class="pri-btn" data-p="high" onclick="setPri(this)">
+                <span class="pri-dot pri-high"></span> High
+              </button>
+            </div>
+          </div>
+          <div class="picker-group">
+            <label class="picker-lbl">Due Date</label>
+            <input type="date" class="add-date" id="task-date" onchange="markPickerUsed()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn" onclick="aiSuggest()">◆ Suggest</button>
+    <button type="button" class="btn btn-primary" id="add-btn" onclick="addTask()" disabled>Add</button>
+
+    <!-- Mobile layout: input + buttons in a row -->
     <div class="toolbar-row">
       <div class="add-wrapper">
         <div class="add-bar">
           <span class="add-plus">+</span>
-          <input type="text" class="add-inp" id="task-inp" placeholder="Add a new task..." onkeydown="if(event.key==='Enter')addTask()" oninput="togglePickers(this.value)">
+          <input type="text" class="add-inp" id="task-inp-mobile" placeholder="Add a new task..." onkeydown="if(event.key==='Enter')addTaskMobile()" oninput="togglePickersMobile(this.value)">
         </div>
-        <div class="add-pickers" id="add-pickers">
+        <div class="add-pickers" id="add-pickers-mobile">
           <div class="picker-row">
             <div class="picker-group">
               <label class="picker-lbl">Category</label>
@@ -381,13 +418,13 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
             </div>
             <div class="picker-group">
               <label class="picker-lbl">Due Date</label>
-              <input type="date" class="add-date" id="task-date" onchange="markPickerUsed()">
+              <input type="date" class="add-date" id="task-date-mobile" onchange="markPickerUsedMobile()">
             </div>
           </div>
         </div>
       </div>
       <button type="button" class="btn" onclick="aiSuggest()">◆ Suggest</button>
-      <button type="button" class="btn btn-primary" id="add-btn" onclick="addTask()" disabled>Add</button>
+      <button type="button" class="btn btn-primary" id="add-btn-mobile" onclick="addTaskMobile()" disabled>Add</button>
     </div>
   </div>
 
@@ -801,6 +838,129 @@ function addUserBub(text){var m=document.getElementById('ai-msgs'),el=document.c
 function showTyping(){var m=document.getElementById('ai-msgs'),el=document.createElement('div');el.id='typ';el.className='typing-bub';el.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';m.appendChild(el);m.scrollTop=m.scrollHeight;}
 function removeTyping(){var e=document.getElementById('typ');if(e)e.remove();}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// Mobile task handling functions
+var pickerUsedMobile=false;
+function togglePickersMobile(val){
+  var pickers=document.getElementById('add-pickers-mobile');
+  var addBtn=document.getElementById('add-btn-mobile');
+  var hasVal=val.length>0;
+  if(pickers)pickers.classList.toggle('show',hasVal);
+  if(addBtn)addBtn.disabled=!(hasVal && pickerUsedMobile);
+}
+function markPickerUsedMobile(){
+  pickerUsedMobile=true;
+  var addBtn=document.getElementById('add-btn-mobile');
+  var inp=document.getElementById('task-inp-mobile');
+  if(addBtn && inp)addBtn.disabled=!(inp.value.trim().length>0);
+}
+function addTaskMobile(){
+  var inp=document.getElementById('task-inp-mobile');
+  var dateInp=document.getElementById('task-date-mobile');
+  var priBtn=document.querySelector('#add-pickers-mobile .pri-btn.on') || document.querySelector('.pri-btn.on');
+  var catBtn=document.querySelector('#add-pickers-mobile .cat-chip.on') || document.querySelector('.cat-chip.on');
+  var val=inp.value.trim();if(!val)return;
+  var pri=priBtn?priBtn.dataset.p:'low';
+  var cat=catBtn?catBtn.dataset.cat:'personal';
+  var catLabel=catBtn?catBtn.textContent:'Personal';
+  var dateVal=dateInp?dateInp.value:'';
+  var dueText;
+  if(dateVal){
+    var d=new Date(dateVal);
+    var today=new Date();
+    today.setHours(0,0,0,0);
+    var isToday=d.toDateString()===today.toDateString();
+    var isPast=d<today;
+    var fmt=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    dueText=isToday?'Today':isPast?'Overdue · '+fmt:fmt;
+  }else{
+    dueText='No date';
+  }
+  var t=document.createElement('div');
+  t.className='task';t.dataset.p=pri;t.dataset.tag=cat;
+  t.innerHTML='<div class="tchk" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name">'+esc(val)+'</div><div class="t-meta"><span class="t-tag">'+catLabel+'</span><span class="t-due">'+dueText+'</span></div></div><button type="button" class="t-del" onclick="delTask(this)">✕</button>';
+  var area=document.getElementById('task-area');
+  var es=document.getElementById('empty-state');
+  var lp=document.getElementById('lbl-progress');
+  if(es)es.classList.remove('show');
+  if(lp && lp.nextSibling){
+    area.insertBefore(t,lp.nextSibling);
+  }else{
+    area.appendChild(t);
+  }
+  inp.value='';
+  dateInp.value='';
+  pickerUsedMobile=false;
+  document.querySelectorAll('#add-pickers-mobile .pri-btn').forEach(function(b){b.classList.remove('on');});
+  var lowBtn=document.querySelector('#add-pickers-mobile .pri-btn[data-p="low"]');
+  if(lowBtn)lowBtn.classList.add('on');
+  var pickers=document.getElementById('add-pickers-mobile');
+  var addBtn=document.getElementById('add-btn-mobile');
+  if(pickers)pickers.classList.remove('show');
+  if(addBtn)addBtn.disabled=true;
+  applyFilter(curFilter);
+  setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
+  addAIMsg('Added "'+esc(val)+'" — want me to set a due date or priority?');
+}
+
+// Streak tracking functionality
+function updateStreak(){
+  var today=new Date();
+  var dayOfWeek=today.getDay();
+  var mondayOffset=dayOfWeek===0?-6:1-dayOfWeek;
+  var weekStart=new Date(today);
+  weekStart.setDate(today.getDate()+mondayOffset);
+  weekStart.setHours(0,0,0,0);
+  var days=[];
+  for(var i=0;i<7;i++){
+    var d=new Date(weekStart);
+    d.setDate(weekStart.getDate()+i);
+    days.push(d);
+  }
+  var allTasks=[].slice.call(document.querySelectorAll('.task'));
+  var completedByDay=[0,0,0,0,0,0,0];
+  allTasks.forEach(function(t){
+    if(t.classList.contains('done')){
+      var dueEl=t.querySelector('.t-due');
+      if(dueEl){
+        var txt=dueEl.textContent;
+        if(txt.indexOf('Today')>-1){
+          completedByDay[dayOfWeek===0?6:dayOfWeek-1]=1;
+        }
+      }
+    }
+  });
+  var sdEls=document.querySelectorAll('.sd');
+  var streakCount=0;
+  var currentStreak=0;
+  for(var i=0;i<7;i++){
+    if(completedByDay[i]){
+      streakCount++;
+      currentStreak++;
+      if(sdEls[i])sdEls[i].classList.add('on');
+    }else{
+      currentStreak=0;
+      if(sdEls[i])sdEls[i].classList.remove('on');
+    }
+  }
+  var streakVal=document.querySelector('.streak-val');
+  if(streakVal){
+    if(streakCount===0){
+      streakVal.textContent='Start fresh!';
+    }else if(streakCount===7){
+      streakVal.textContent='Perfect week! 🔥';
+    }else{
+      streakVal.textContent=streakCount+'/'+7+' days';
+    }
+  }
+}
+
+// Call updateStreak on init and when tasks change
+var origUpdateStats=updateStats;
+updateStats=function(){
+  origUpdateStats();
+  updateStreak();
+};
 </script>
 </body>
 </html>
