@@ -142,7 +142,9 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 .tchk.on{background:var(--ac);border-color:var(--ac)}
 .tchk.on::after{content:'✓';font-size:11px;color:#fff;font-weight:700}
 .t-body{flex:1;min-width:0}
-.t-name{font-size:14px;font-weight:500;color:var(--tx);margin-bottom:5px;line-height:1.35;word-break:break-word}
+.t-name{font-size:14px;font-weight:500;color:var(--tx);margin-bottom:5px;line-height:1.35;word-break:break-word;cursor:pointer}
+.t-name:hover{color:var(--ac)}
+.edit-inp{font-size:14px;font-weight:500;color:var(--tx);background:var(--surf2);border:1.5px solid var(--ac);border-radius:var(--rs);padding:4px 8px;width:100%;outline:none}
 .t-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .t-tag{font-family:'Outfit',sans-serif;font-size:16px;padding:5px 10px;border-radius:5px;border:1px solid var(--bd);color:var(--tx3);background:var(--bg)}
 .t-ai{font-family:'Outfit',sans-serif;font-size:16px;padding:5px 10px;border-radius:5px;border:1px solid var(--ac);color:var(--ac);background:var(--acd)}
@@ -706,6 +708,7 @@ function delTask(btn){
       var es=document.getElementById('empty-state');
       if(es)es.classList.add('show');
     }
+    saveTasks();
   },230);
 }
 var pickerUsed=false;
@@ -756,9 +759,10 @@ function addTask(){
     dueText='No date';
   }
   var priClass='pri-dot pri-'+pri;
+  var taskId=generateId();
   var t=document.createElement('div');
-  t.className='task';t.dataset.p=pri;t.dataset.tag=cat;
-  t.innerHTML='<div class="tchk" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name">'+esc(val)+'</div><div class="t-meta"><span class="t-tag">'+catLabel+'</span><span class="t-due">'+dueText+'</span></div></div><button type="button" class="t-del" onclick="delTask(this)">✕</button>';
+  t.className='task';t.dataset.id=taskId;t.dataset.p=pri;t.dataset.tag=cat;t.dataset.created=new Date().toISOString();
+  t.innerHTML='<div class="tchk" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name" onclick="editTask(this)">'+esc(val)+'</div><div class="t-meta"><span class="t-tag">'+catLabel+'</span><span class="t-due">'+dueText+'</span></div></div><button type="button" class="t-del" onclick="delTask(this)">✕</button>';
   var area=document.getElementById('task-area');
   var es=document.getElementById('empty-state');
   var lp=document.getElementById('lbl-progress');
@@ -877,8 +881,9 @@ function addTaskMobile(){
     dueText='No date';
   }
   var t=document.createElement('div');
-  t.className='task';t.dataset.p=pri;t.dataset.tag=cat;
-  t.innerHTML='<div class="tchk" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name">'+esc(val)+'</div><div class="t-meta"><span class="t-tag">'+catLabel+'</span><span class="t-due">'+dueText+'</span></div></div><button type="button" class="t-del" onclick="delTask(this)">✕</button>';
+  var taskId=generateId();
+  t.className='task';t.dataset.id=taskId;t.dataset.p=pri;t.dataset.tag=cat;t.dataset.created=new Date().toISOString();
+  t.innerHTML='<div class="tchk" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name" onclick="editTask(this)">'+esc(val)+'</div><div class="t-meta"><span class="t-tag">'+catLabel+'</span><span class="t-due">'+dueText+'</span></div></div><button type="button" class="t-del" onclick="delTask(this)">✕</button>';
   var area=document.getElementById('task-area');
   var es=document.getElementById('empty-state');
   var lp=document.getElementById('lbl-progress');
@@ -960,7 +965,84 @@ var origUpdateStats=updateStats;
 updateStats=function(){
   origUpdateStats();
   updateStreak();
+  saveTasks();
 };
+
+// Database (localStorage) functions
+var DB_KEY='miko_tasks';
+function saveTasks(){
+  var tasks=[];
+  document.querySelectorAll('.task').forEach(function(t){
+    tasks.push({
+      id:t.dataset.id||generateId(),
+      name:t.querySelector('.t-name').textContent,
+      priority:t.dataset.p,
+      category:t.dataset.tag,
+      categoryLabel:t.querySelector('.t-tag').textContent,
+      due:t.querySelector('.t-due').textContent,
+      done:t.classList.contains('done'),
+      created:t.dataset.created||new Date().toISOString()
+    });
+  });
+  localStorage.setItem(DB_KEY,JSON.stringify(tasks));
+}
+function loadTasks(){
+  var data=localStorage.getItem(DB_KEY);
+  if(!data)return;
+  var tasks;
+  try{tasks=JSON.parse(data);}catch(e){return;}
+  if(!tasks||!tasks.length)return;
+  var area=document.getElementById('task-area');
+  var es=document.getElementById('empty-state');
+  var lp=document.getElementById('lbl-progress');
+  if(es)es.classList.remove('show');
+  tasks.forEach(function(task){
+    var t=document.createElement('div');
+    t.className='task'+(task.done?' done':'');
+    t.dataset.id=task.id||generateId();
+    t.dataset.p=task.priority||'low';
+    t.dataset.tag=task.category||'personal';
+    t.dataset.created=task.created||new Date().toISOString();
+    var priClass='pri-dot pri-'+(task.priority||'low');
+    t.innerHTML='<div class="tchk '+(task.done?' on':'')+'" onclick="toggleDone(this)"></div><div class="t-body"><div class="t-name" onclick="editTask(this)">'+esc(task.name)+'</div><div class="t-meta"><span class="t-tag">'+(task.categoryLabel||task.category||'Personal')+'</span><span class="t-due">'+(task.due||'No date')+'</span></div></div><button type="button" class="t-del" onclick="delTask(this)">✕</button>';
+    if(lp && lp.nextSibling){
+      area.insertBefore(t,lp.nextSibling);
+    }else{
+      area.appendChild(t);
+    }
+  });
+  updateStats();
+}
+function generateId(){return Date.now().toString(36)+Math.random().toString(36).substr(2);}
+
+// Task editing functionality
+var editingTask=null;
+function editTask(nameEl){
+  if(editingTask)return;
+  var task=nameEl.closest('.task');
+  var currentName=nameEl.textContent;
+  editingTask=task;
+  nameEl.innerHTML='<input type="text" class="edit-inp" value="'+esc(currentName)+'" onkeydown="if(event.key===\'Enter\')saveEdit(this)" onblur="saveEdit(this)" />';
+  var inp=nameEl.querySelector('.edit-inp');
+  inp.focus();
+  inp.select();
+}
+function saveEdit(inp){
+  if(!editingTask)return;
+  var newName=inp.value.trim();
+  var nameEl=editingTask.querySelector('.t-name');
+  if(newName){
+    nameEl.textContent=newName;
+    addAIMsg('Task updated to "'+esc(newName)+'"');
+  }else{
+    nameEl.textContent=inp.defaultValue;
+  }
+  editingTask=null;
+  saveTasks();
+}
+
+// Load tasks on init
+loadTasks();
 </script>
 </body>
 </html>
