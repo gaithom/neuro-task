@@ -606,6 +606,7 @@ var curFilter='all',deskOpen=false,panelOpen=false,mobOpen=false;
   var pGreet=document.getElementById('p-greet');
   if(pGreet){
     var greetText=h<12?'GOOD MORNING,':h<17?'GOOD AFTERNOON,':'GOOD EVENING,';
+    pGreet.textContent=greetText;
     var pDate=document.querySelector('.p-date');
     if(pDate)pDate.textContent='User · Let\'s make it count.';
   }
