@@ -1447,6 +1447,20 @@ function saveCanvas(){
 
 // Canvas event listeners
 document.addEventListener('DOMContentLoaded',function(){
+  // Request fullscreen on mobile to hide system navigation bar
+  function requestFullscreen(){
+    var el=document.documentElement;
+    if(el.requestFullscreen){el.requestFullscreen();}
+    else if(el.webkitRequestFullscreen){el.webkitRequestFullscreen();}
+    else if(el.msRequestFullscreen){el.msRequestFullscreen();}
+  }
+  // Try to enter fullscreen on first user interaction (required by browsers)
+  function tryFullscreen(){
+    if(window.innerWidth<900){requestFullscreen();}
+  }
+  document.addEventListener('click',tryFullscreen,{once:true});
+  document.addEventListener('touchstart',tryFullscreen,{once:true});
+  
   var c=document.getElementById('sketch-canvas');
   if(c){
     c.addEventListener('mousedown',startDrawing);
