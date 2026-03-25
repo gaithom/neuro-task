@@ -230,7 +230,7 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
 @media(max-width:600px){
   .topbar{display:flex}
   .bot-nav{display:flex}
-  .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);width:var(--sb-open) !important;min-width:var(--sb-open) !important;box-shadow:6px 0 28px rgba(0,0,0,.18)}
+  .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);width:var(--sb-open) !important;min-width:var(--sb-open) !important;box-shadow:6px 0 28px rgba(0,0,0,.18);overflow-y:auto;-webkit-overflow-scrolling:touch}
   .sb.mob-open{transform:translateX(0)}
   .sb-toggle{display:none}
   .sb-close{display:flex;position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:var(--surf2);border:1px solid var(--bd);align-items:center;justify-content:center;font-size:18px;color:var(--tx2);cursor:pointer;z-index:10}
@@ -271,6 +271,41 @@ input::placeholder,textarea::placeholder{color:var(--tx3)}
   .t-name{white-space:normal}
   #goto-top{bottom:72px;right:14px;width:38px;height:38px;font-size:14px}
   .ai-fab{bottom:68px;right:14px;width:44px;height:44px;font-size:18px}
+}
+
+/* Landscape mobile screens */
+@media(max-width:900px) and (orientation:landscape){
+  .hero{padding:14px 18px 0}
+  .hero-h{font-size:clamp(28px,6vw,40px)}
+  .hero-stats{flex-direction:row;gap:8px}
+  .hs{flex:1;min-width:auto;padding:4px 10px}
+  .toolbar{padding:10px 18px 0}
+  .filters{padding:8px 18px 0}
+  .task-area{padding:10px 18px 80px}
+  .panel{width:260px;min-width:260px}
+  .sb{--sb-open:200px}
+}
+
+@media(max-width:600px) and (orientation:landscape){
+  .hero{display:none}
+  .toolbar{padding:8px 14px 0}
+  .filters{padding:6px 14px 0}
+  .task-area{padding:6px 14px 80px}
+  .sb{--sb-open:180px}
+  .sb-logo-row{padding:0 10px}
+  .sb-mark{width:32px;height:32px;min-width:32px}
+  .sb-word{font-size:14px}
+  .sb-item{height:36px;margin:1px 6px}
+  .si-ico{width:40px;min-width:40px;height:36px}
+  .si-lbl{font-size:14px}
+  .sb-user-row{height:44px}
+  .sb-av{width:32px;height:32px;min-width:32px}
+  .sb-uname{font-size:13px}
+  .sb-urole{font-size:14px}
+  .bot-nav{padding:4px 0 max(4px,env(safe-area-inset-bottom))}
+  .bn{padding:4px 12px}
+  .ai-fab{bottom:58px}
+  #goto-top{bottom:62px}
 }
 @media(min-width:901px) and (max-width:1140px){
   .hero-stats{display:none}
